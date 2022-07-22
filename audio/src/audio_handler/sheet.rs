@@ -10,6 +10,7 @@ pub enum NoteType {
     Square,
     Triangle,
     Saw,
+    Synth1,
 }
 
 impl NoteType {
@@ -19,6 +20,7 @@ impl NoteType {
             "square" => NoteType::Square,
             "triangle" => NoteType::Triangle,
             "saw" => NoteType::Saw,
+            "synth1" => NoteType::Synth1,
             _ => panic!("aaa"),
         }
     }
@@ -113,6 +115,7 @@ impl Sheet {
         Ok(sheet)
     }
 
+    /// Writes WAV file header based on chunk size.
     fn write_wav_header(&self, file: &mut File, chunk_size: usize) -> Result<(), ()> {
         let mut total_chunk_size = chunk_size * 4 + 36;
         let mut data_chunk_size = chunk_size * 4;
@@ -161,9 +164,9 @@ impl Sheet {
         Ok(())
     }
 
-    // Write wav data chunks to file.
-    // Interprets notes.
-    // It takes quite long time.
+    /// Write wav data chunks to file.
+    /// Interprets notes.
+    /// It takes quite long time.
     fn write_wav_data(&self, file: &mut File, total_samples: usize) -> Result<(), ()> {
         let mut notes_alive: HashSet<Note> = HashSet::new();
         // Current position in length.
@@ -195,15 +198,13 @@ impl Sheet {
         Ok(())
     }
 
-    // Computes wave function according to note type.
-    // TODO: implement phase of wave function.
+    /// Computes wave function according to note type.
+    /// TODO: implement phase of wave function.
     fn compute_wave(amplitude: usize, frequency: f64, note_type: NoteType, index: usize) -> usize {
         match note_type {
-            // Sine Wave
             NoteType::Sine => {
                 wave::wave_sine(amplitude, frequency, index)
             }
-            // Square Wave
             NoteType::Square => {
                 wave::wave_square(amplitude, frequency, index)
             }
@@ -213,9 +214,13 @@ impl Sheet {
             NoteType::Saw => {
                 wave::wave_saw(amplitude, frequency, index)
             }
+            NoteType::Synth1 => {
+                wave::wave_synth1(amplitude, frequency, index)
+            }
         } 
     }
 
+    /// Collect notes alive at current position.
     fn collect_notes_alive(&self, notes_alive: &mut HashSet<Note>, current_position: usize) {
         // Remove notes no longer needed.
         let mut victims = HashSet::new();
@@ -236,6 +241,7 @@ impl Sheet {
         }
     }
 
+    /// Create WAV file and put contents based on sheet data.
     pub fn create_wav(&self, file_name: &str) -> Result<(), ()> {
         let path_name = format!("./wavs/{}.wav", file_name);
         let path = Path::new(path_name.as_str());
