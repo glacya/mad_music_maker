@@ -1,12 +1,25 @@
-table td{
-    border: 1px solid grey;
-    width:50px;
-    height:40px;
+.oneNoteCell{
+    border: 1px solid black;
+    width:10px;
+    height:5px;
 }
+.notOneNoteCell{
+    border: 1px solid red;
+    width:10px;
+    height:5px;
+}
+table td{
+    border: 1px solid black;
+    width:10px;
+    height:5px;
+}
+
 .note_name{
     padding-left: 10px;
     padding-right: 10px;
 }
-.clicked{
+/* .clicked{
+    
+} */
 
-}
+/*table td*/
