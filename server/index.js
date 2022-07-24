@@ -35,6 +35,13 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
+// id for playtesting.
+var playtest_id = 0;
+
+// id for uploading.
+var upload_id = 0;
+
+
 app.get("/", (req, res) => {
     res.status(200).sendFile(path.join(__dirname, "test.html"));
 });
@@ -119,13 +126,81 @@ app.post("/register", (req, res) => {
 // Send audio for playtesting.
 app.post('/audio_playtest', (req, res) => {
     debug("POST /audio_playtest");
-    // TODO
+    console.log(req.body);
+    
+    fs.writeFile(path.join(__dirname, `../audio/jsons/playtest${playtest_id}.json`), JSON.stringify(req.body), async (error) => {
+        if (error) {
+            console.log(`Writing playtest data to file playtest${playtest_id}.json failed.`);
+            console.log(error);
+            res.status(500).send("Internal server error. Please try later.");
+        }
+        else {
+            // await exec("cd ../audio");
+            process.chdir('../audio');
+            const {stdout, stderr} = await exec(`cargo run playtest${playtest_id}`);
+            if (stdout === "Success") {
+                playtest_id += 1;
+                res.sendFile(path.join(__dirname, `../audio/wavs/playtest${playtest_id}.wav`), (error) => {
+                    if (error) {
+                        console.log(`Sending file playtest${playtest_id}.wav failed.`);
+                    }
+                });
+            }
+            else {
+                console.log(`Something went wrong while creating audio file from playtest${playtest_id}.json.`);
+                res.status(500).send("Internal server error. Please try later.");
+            }
+            process.chdir('../server')
+        }
+    });
 });
 
 // Upload audio.
 app.post('/audio_upload', (req, res) => {
     debug("POST /audio_upload");
-    // TODO
+
+    const author_id = req.body.author_id;
+    const music_name = req.body.music_name;
+
+    if (author_id === undefined || music_name === undefined) {
+        console.log('Author id or Music name is not in request body.');
+        res.status(400).send("Bad request. Please include both author_id and music_name field in your request body.");
+    }
+    else {
+        fs.writeFile(path.join(__dirname, `../audio/jsons/${upload_id}.json`), JSON.stringify(req.body), (error) => {
+            if (error) {
+                console.log(`Writing audio data to file ${upload_id}.json failed.`);
+                console.log(error);
+                res.status(500).send("Internal server error. Please try later.");
+            }
+            else {
+                connection.query('insert into musics(music_id, author_id, music_name) values (?, ?, ?)', [upload_id, author_id, music_name], async (error, rows, field) => {
+                    if (error) {
+                        console.log(`Query error.`);
+                        console.log(error);
+                        res.status(500).send("Internal server error. Please try later.");
+                        fs.unlink(path.join(__dirname, `../audio/jsons/${upload_id}.json`));
+                    }
+                    else {
+                        upload_id += 1;
+                        console.log(`Success.`);
+                        res.status(200).send("Upload success.");
+                        process.chdir('../audio');
+                        const {stdout, _} = await exec(`cargo run ${upload_id}`);
+                        if (stdout === "Success") {
+                            console.log("Ok, created wav file on storage.");
+                        }
+                        else {
+                            console.log("Failed on creating wav file on storage...");
+                        }
+                        process.chdir("../server");
+                    }
+                });
+    
+                
+            }
+        });
+    }
 });
 
 app.listen(port, () => {

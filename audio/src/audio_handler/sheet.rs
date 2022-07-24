@@ -3,6 +3,7 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 use super::wave;
+use super::adsr;
 
 #[derive(Eq, PartialEq, Copy, Clone, Hash)]
 pub enum NoteType {
@@ -53,6 +54,51 @@ impl Note {
         let pitch_num = (self.pitch + 3) as f64;
         let pitch_distance = f64::ln(2.0) * pitch_num / 12.0 + f64::ln(440.0);
         f64::exp(pitch_distance)
+    }
+
+    /// Computes wave function according to note type.
+    /// TODO: Implement phase of wave function.
+    pub fn compute_wave(&self, amplitude: usize, index: usize) -> f64 {
+        let frequency = self.get_frequency() / 2.0;
+        match self.note_type {
+            NoteType::Sine => {
+                wave::wave_sine(amplitude, frequency, index)
+            }
+            NoteType::Square => {
+                wave::wave_square(amplitude, frequency, index)
+            }
+            NoteType::Triangle => {
+                wave::wave_triangle(amplitude, frequency, index)
+            }
+            NoteType::Saw => {
+                wave::wave_saw(amplitude, frequency, index)
+            }
+            NoteType::Synth1 => {
+                wave::wave_synth1(amplitude, frequency, index)
+            }
+        }
+    }
+
+    /// Computes adsr function according to note type.
+    pub fn compute_adsr(&self, chunks_per_length: usize, current_index: usize) -> f64 {
+        let start_index = chunks_per_length * self.start;
+        match self.note_type {
+            NoteType::Sine => {
+                adsr::adsr_full_linear(current_index, start_index)
+            }
+            NoteType::Square => {
+                adsr::adsr_plain(current_index, start_index)
+            }
+            NoteType::Triangle => {
+                adsr::adsr_plain(current_index, start_index)
+            }
+            NoteType::Saw => {
+                adsr::adsr_plain(current_index, start_index)
+            }
+            NoteType::Synth1 => {
+                adsr::adsr_full_exponential(current_index, start_index)
+            }
+        }
     }
 }
 
@@ -116,7 +162,7 @@ impl Sheet {
     }
 
     /// Writes WAV file header based on chunk size.
-    fn write_wav_header(&self, file: &mut File, chunk_size: usize) -> Result<(), ()> {
+    pub fn write_wav_header(&self, file: &mut File, chunk_size: usize) -> Result<(), ()> {
         let mut total_chunk_size = chunk_size * 4 + 36;
         let mut data_chunk_size = chunk_size * 4;
         let mut total_chunk_digits: Vec<u8> = vec![];
@@ -169,9 +215,14 @@ impl Sheet {
     /// It takes quite long time.
     fn write_wav_data(&self, file: &mut File, total_samples: usize) -> Result<(), ()> {
         let mut notes_alive: HashSet<Note> = HashSet::new();
+        // let mut notes_releasing: HashSet<Note> = HashSet::new();
         // Current position in length.
         let mut current_position = 0;
         let chunks_per_length = total_samples / self.length;
+
+        // For every sample, compute wave function and adsr function to get actual amplitude of sound.
+        // TODO: Support filters.
+        // TODO: Support sound of release.
         for i in 0..total_samples {
             if i % chunks_per_length == 0 {
                 self.collect_notes_alive(&mut notes_alive, current_position);
@@ -180,13 +231,15 @@ impl Sheet {
 
             let mut payload: Vec<u8> = vec![];
             
-            let mut amplitude = 0;
+            let mut amplitude = 65536;
             for note in notes_alive.iter() {
-                let note_frequency = note.get_frequency();
-                amplitude += Self::compute_wave(5000, note_frequency, note.note_type, i);
+                let adsr_value = note.compute_adsr(chunks_per_length, i);
+                let wave_value = note.compute_wave(5000, i);
+                amplitude += (adsr_value * wave_value) as usize;
                 amplitude %= 65536;
             }
 
+            // Payload consists of 2 duplicate items, because currently we make stereo sounds.
             for _ in 0..2 {
                 payload.push((amplitude % 256) as u8);
                 payload.push((amplitude / 256) as u8);
@@ -196,28 +249,6 @@ impl Sheet {
         }
 
         Ok(())
-    }
-
-    /// Computes wave function according to note type.
-    /// TODO: implement phase of wave function.
-    fn compute_wave(amplitude: usize, frequency: f64, note_type: NoteType, index: usize) -> usize {
-        match note_type {
-            NoteType::Sine => {
-                wave::wave_sine(amplitude, frequency, index)
-            }
-            NoteType::Square => {
-                wave::wave_square(amplitude, frequency, index)
-            }
-            NoteType::Triangle => {
-                wave::wave_triangle(amplitude, frequency, index)
-            }
-            NoteType::Saw => {
-                wave::wave_saw(amplitude, frequency, index)
-            }
-            NoteType::Synth1 => {
-                wave::wave_synth1(amplitude, frequency, index)
-            }
-        } 
     }
 
     /// Collect notes alive at current position.
