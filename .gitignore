@@ -2,3 +2,5 @@
 /audio/target
 /audio/jsons
 /audio/wavs
+/package-lock.json
+/package.json
