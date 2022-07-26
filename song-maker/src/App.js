@@ -1,8 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
-import React, {useState, useEffect} from 'react' //useSate import
+import React, {useState, useEffect, StrictMode} from 'react' //useSate import
 import SongMakerSelf from './SongMakerSelf/SongMakerSelf';
 import musicImg from './music.png'
+import Show from './score/show'
 
 function App() {
   const [inputValue,setInputValue]=useState(1)
@@ -26,6 +27,7 @@ function App() {
   }
 
   return (
+    <div>
     <form className="App">
       <img src={musicImg} 
       width="50" 
@@ -58,7 +60,12 @@ function App() {
         <p>NoteType Selected: {Selected}</p>
         <p>NoteType Selected: {Selected2}</p>
       <SongMakerSelf column={10} noteLength={inputValue} tempo={inputTempo} note_type={Selected} rhythm={Selected2}/>
+      
     </form>
+    <StrictMode>
+      <Show />
+    </StrictMode>
+    </div>
   );
 }
 
