@@ -10,8 +10,8 @@ export default function Preview({ value, onEvent, isPlaying }) {
         <Score
           id={uniqid()}
           notation={`${children}`.replace(/\n$/, "")}
-          onEvent={onEvent}
-          isPlaying={isPlaying}
+          //onEvent={onEvent}
+          //isPlaying={isPlaying}
         />
       ) : (
         <code className={className} {...props} />
