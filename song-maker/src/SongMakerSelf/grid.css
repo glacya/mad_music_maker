@@ -1,0 +1,15 @@
+html, 
+body,
+.grid {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    /* border-radius: 40px 40px; */
+}
+.grid {
+    background-image:
+      repeating-linear-gradient(#ccc 0 1px, transparent 1px 100%),
+      repeating-linear-gradient(90deg, #ccc 0 1px, transparent 1px 100%);
+    background-size: 20px 12px;
+    
+}
