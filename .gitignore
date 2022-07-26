@@ -2,3 +2,7 @@
 /audio/target
 /audio/jsons
 /audio/wavs
+/package-lock.json
+/package.json
+/song-maker/package-lock.json
+/song-maker/package.json
