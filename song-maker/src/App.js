@@ -27,7 +27,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div >
     <form className="App">
       <img src={musicImg} 
       width="50" 
@@ -60,7 +60,6 @@ function App() {
         <p>NoteType Selected: {Selected}</p>
         <p>NoteType Selected: {Selected2}</p>
       <SongMakerSelf column={10} noteLength={inputValue} tempo={inputTempo} note_type={Selected} rhythm={Selected2}/>
-      
     </form>
     <StrictMode>
       <Show />
