@@ -1,1 +1,3 @@
 node_modules
+
+/song-maker/package-lock.json
