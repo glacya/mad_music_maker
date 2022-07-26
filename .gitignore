@@ -4,5 +4,5 @@
 /audio/wavs
 /package-lock.json
 /package.json
-/song-maker/src/package-lock.json
-/song-maker/src/package.json
+/song-maker/package-lock.json
+/song-maker/package.json
