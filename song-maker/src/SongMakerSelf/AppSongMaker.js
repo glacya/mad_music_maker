@@ -1,7 +1,7 @@
 import React, {useState, useEffect, StrictMode} from 'react'
 import './AppSongMaker.css';
 import SongMakerSelf from './SongMakerSelf';
-import musicImg from '../music.png'
+import musicImg from './img/music.png'
 import Show from '../score/show'
 
 const AppSongMaker =()=>{
