@@ -105,7 +105,7 @@ impl Note {
 /// Represents whole sheets.
 pub struct Sheet {
     tempo: usize,         // beats per minute.
-    length: usize,        // length means total length. 1 beats = 4 length.
+    total_length: usize,        // length means total length. 1 beats = 4 length.
     // number_of_notes: usize,    // not included here.
     notes: Vec<Note>
 }
@@ -140,9 +140,15 @@ impl Sheet {
             }
         };
 
+        let tempo = Self::real::<usize>(content["tempo"].as_usize())?;
+        let total_length = Self::real::<usize>(content["total_length"].as_usize())?;
+        if (total_length == 0) {
+            eprintln!("Total length should not be zero.");
+            return Err(())
+        }
         let mut sheet = Self {
-            tempo: content["tempo"].as_usize().unwrap(),
-            length: content["length"].as_usize().unwrap(),
+            tempo,
+            total_length,
             notes: Vec::new()
         };
 
@@ -150,15 +156,28 @@ impl Sheet {
 
         for i in 0..number_of_notes {
             let note_data = &content["notes"][i];
+            let start = Self::real::<usize>(note_data["start"].as_usize())?;
+            let length = Self::real::<usize>(note_data["length"].as_usize())?;
+            let pitch = Self::real::<usize>(note_data["pitch"].as_usize())?;
+            let note_type = Self::real::<&str>(note_data["note_type"].as_str())?;
             sheet.notes.push(Note::new(
-                note_data["start"].as_usize().unwrap(),
-                note_data["length"].as_usize().unwrap(),
-                note_data["pitch"].as_usize().unwrap(),
-                NoteType::note_type(note_data["note_type"].as_str().unwrap()),
+                start,
+                length,
+                pitch,
+                NoteType::note_type(note_type),
             ))
         }
 
         Ok(sheet)
+    }
+
+    fn real<T>(value: Option<T>) -> Result<T, ()> {
+        if let Some(value) = value {
+            Ok(value)
+        }
+        else {
+            Err(())
+        }
     }
 
     /// Writes WAV file header based on chunk size.
@@ -218,7 +237,7 @@ impl Sheet {
         // let mut notes_releasing: HashSet<Note> = HashSet::new();
         // Current position in length.
         let mut current_position = 0;
-        let chunks_per_length = total_samples / self.length;
+        let chunks_per_length = total_samples / self.total_length;
 
         // For every sample, compute wave function and adsr function to get actual amplitude of sound.
         // TODO: Support filters.
@@ -288,7 +307,7 @@ impl Sheet {
 
         // Chunk size is actual data size.
         let sample_rate = 44100;
-        let chunk_size = 15.0 * (self.length as f64) / (self.tempo as f64) * (sample_rate as f64);
+        let chunk_size = 15.0 * (self.total_length as f64) / (self.tempo as f64) * (sample_rate as f64);
         let chunk_size = chunk_size as usize;
 
         if self.write_wav_header(&mut file, chunk_size).is_err() {

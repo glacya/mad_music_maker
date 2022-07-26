@@ -47,7 +47,7 @@ pub fn wave_saw(amplitude: usize, frequency: f64, index: usize) -> f64 {
 
 /// Computes Synth1 wave value for current amplitude, frequency, and index.
 pub fn wave_synth1(amplitude: usize, frequency: f64, index: usize) -> f64 {
-    let pi = std::f64::consts::PI;
+    // let pi = std::f64::consts::PI;
     let ampf = amplitude as f64;
     let component1 = sine_overtone(1, frequency, index);
     // let component2 = f64::exp(-0.00004 * 2.0 * pi * (index as f64) * frequency / 44100.0);

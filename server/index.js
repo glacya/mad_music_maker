@@ -124,7 +124,7 @@ app.post("/register", (req, res) => {
 });
 
 // Send audio for playtesting.
-app.post('/audio_playtest', (req, res) => {
+app.post('/api/audio_playtest', (req, res) => {
     debug("POST /audio_playtest");
     console.log(req.body);
     
@@ -139,10 +139,14 @@ app.post('/audio_playtest', (req, res) => {
             process.chdir('../audio');
             const {stdout, stderr} = await exec(`cargo run playtest${playtest_id}`);
             if (stdout === "Success") {
-                playtest_id += 1;
                 res.sendFile(path.join(__dirname, `../audio/wavs/playtest${playtest_id}.wav`), (error) => {
                     if (error) {
                         console.log(`Sending file playtest${playtest_id}.wav failed.`);
+                        console.log(error);
+                    }
+                    else {
+                        console.log(`Sending file playtest${playtest_id}.wav succeeded.`);
+                        playtest_id += 1;
                     }
                 });
             }
