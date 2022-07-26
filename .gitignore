@@ -1,3 +1,5 @@
 node_modules
-
+/audio/wavs
+/audio/jsons
+/audio/target
 /song-maker/package-lock.json
