@@ -2,7 +2,9 @@ import ReactMarkdown from "react-markdown";
 import Score from "./Score";
 import uniqid from "uniqid";
 
-export default function Preview({ value, onEvent, isPlaying }) {
+console.log("#################### Preview.js ####################")
+
+export default function Preview({value}) {
   const components = {
     code({ node, inline, className, children, ...props }) {
       const match = /language-(\w+)/.exec(className || "");

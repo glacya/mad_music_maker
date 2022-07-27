@@ -1,36 +1,76 @@
 import { useState, useEffect } from "react";
-
 import * as Tone from "tone";
-
 import Editor from "./Editor";
 import Preview from "./Preview";
-
+import { show_sheet } from "./parse"
 import "./styles.css";
 
-var defaultValue = `
-\`\`\`abc
-X: 1
-M: 4/4
-K: Am
-|cea|[^Gb],ecb|[Gc']ecc'|[^F^f]dA^f|[eF]cAc-|cecA|[B,GB][A,Ac][A,Ac]4|
-\`\`\``;
+console.log("################# show.js #####################")
+const json = JSON.parse(JSON.stringify({
+    "tempo": 130,
+    "length": 20,
+    "number_of_notes": 4,
+    "rhythm" : "4/4",
+    "notes": [
+        {
+            "start": 1,
+            "length": 4,
+            "pitch": 4,
+            "note_type": "saw"
+        },
+        {
+            "start": 5,
+            "length": 1,
+            "pitch": 2,
+            "note_type": "saw"
+        },
+        {
+            "start": 5,
+            "length": 1,
+            "pitch": 12,
+            "note_type": "saw"
+        },
+        {
+            "start": 6,
+            "length": 1,
+            "pitch": 0,
+            "note_type": "saw"
+        },
+        {
+            "start": 7,
+            "length": 1,
+            "pitch": 2,
+            "note_type": "saw"
+        },
+        {
+            "start": 7,
+            "length": 1,
+            "pitch": 5,
+            "note_type": "saw"
+        },
+        {
+            "start": 11,
+            "length": 1,
+            "pitch": 10,
+            "note_type": "saw"
+        },
+        {
+            "start": 16,
+            "length": 4,
+            "pitch": 0,
+            "note_type": "saw"
+        }
+    ]
+})) // 넘겨받을 json 데이터
 
-defaultValue = `
-\`\`\`abc
-X: 1
-M: 4/4
-K: Am
-|z1[E2][D1/2][C1/2][D1/2]z3[^A1/2]||
-\`\`\``;
-
+var defaultValue = show_sheet(json)
 const synth = new Tone.PolySynth(Tone.Synth).toDestination();
 
 export default function App() {
+  console.log("############"+defaultValue);
   const [value, setValue] = useState(defaultValue);
   const [isPlaying, setPlaying] = useState(false);
-  function onEditorChange(value, event) {
-    setValue(value);
-  }
+  
 
   function onEvent(event) {
     if (!event) {
@@ -43,17 +83,7 @@ export default function App() {
 
   return (
     <div className = "Sheet">
-    <Preview value={value} onEvent={onEvent} isPlaying={isPlaying} />
+    <Preview value={value}/>
     </div>
   );
-  /*
-  return (
-    <div className="App">
-      <Editor onEditorChange={onEditorChange} defaultValue={defaultValue} />
-      <div className="preview-wrapper">
-        <Preview value={value} onEvent={onEvent} isPlaying={isPlaying} />
-      </div>
-    </div>
-  );
-  */
 }

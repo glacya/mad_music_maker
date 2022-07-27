@@ -1,68 +1,9 @@
-const json = JSON.parse(JSON.stringify({
-    "tempo": 130,
-    "length": 20,
-    "number_of_notes": 4,
-    "rhythm" : "4/4",
-    "notes": [
-        {
-            "start": 1,
-            "length": 4,
-            "pitch": 4,
-            "note_type": "saw"
-        },
-        {
-            "start": 5,
-            "length": 1,
-            "pitch": 2,
-            "note_type": "saw"
-        },
-        {
-            "start": 5,
-            "length": 1,
-            "pitch": 12,
-            "note_type": "saw"
-        },
-        {
-            "start": 6,
-            "length": 1,
-            "pitch": 0,
-            "note_type": "saw"
-        },
-        {
-            "start": 7,
-            "length": 1,
-            "pitch": 2,
-            "note_type": "saw"
-        },
-        {
-            "start": 7,
-            "length": 1,
-            "pitch": 5,
-            "note_type": "saw"
-        },
-        {
-            "start": 11,
-            "length": 1,
-            "pitch": 10,
-            "note_type": "saw"
-        },
-        {
-            "start": 16,
-            "length": 4,
-            "pitch": 0,
-            "note_type": "saw"
-        }
-    ]
-}))
-
-show_sheet(json)
-
-function show_sheet(json){
+export function show_sheet(json){
     var result = `\`\`\`abc\nX: 1\nM: ${json.rhythm}\nK: C\n`
     const count = json.rhythm[0]
     const length = json.rhythm[2]
     var index = 0
-    for(i=0;i<json.length;){
+    for(let i=0;i<json.length;){
         if(i%16==0){
             result += '|'
         }
@@ -168,4 +109,4 @@ function to_abc(pitch){
         default:
             break;
     }
-};
+}
