@@ -41,17 +41,25 @@ const AppSongMaker =()=>{
           <div className='inputNT'>
             <div className='inputNT'>
           <h5>Note Length: </h5>
-          <input className="inputInfo" type="number" onChange={(e)=>setInputValue(e.target.valueAsNumber)}></input>
+          <input className="inputInfo" type="number"  onChange={(e)=>setInputValue(e.target.valueAsNumber)}></input>
           </div>
-          <div className='inputNT'>
+          {/* <div className='inputNT'>
           <h5>Tempo: </h5>
           <input className="inputInfo" type="number" onChange={(e)=>setInputTempo(e.target.valueAsNumber)}></input>
-          </div>
+          </div> */}
+          <h5 for="noteType">Note type:</h5>
           
+          <select name="noteType" id="noteTypes" onChange={handleSelect} value={Selected}>
+            <option value="sin" selected>sin</option>
+            <option value="square">square</option>
+            <option value="triangle">triangle</option>
+            <option value="saw">saw</option>
+            <option value="synth1">synth1</option>
+          </select>
           </div>
 
 
-          <div className='inputNT'>
+          {/* <div className='inputNT'>
           <div className='inputNT'>
           <h5 for="noteType">Note type:</h5>
           
@@ -71,7 +79,7 @@ const AppSongMaker =()=>{
           </select>
           <input type="submit" value="Submit" onClick={handleClick}></input>
           </div>
-          </div>
+          </div> */}
           
           </div>
           {/* <button onClick={getNoteLength}>입력</button> */}

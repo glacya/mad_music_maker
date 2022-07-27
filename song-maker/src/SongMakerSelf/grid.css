@@ -17,12 +17,17 @@ body,
 .gridAndBtn{
   display: flex;
 }
-
+.noteName{
+  display: block;
+}
+.singleNoteName{
+  font-size: 7.5px;
+}
 input.img-button{
   background: url("img/play.png") no-repeat;
   border: none;
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   background-size: cover;
   /* object-fit: cover; */
   cursor: pointer;
@@ -30,8 +35,8 @@ input.img-button{
 input.music-add{
 background: url("img/musicAdd.png");
 border: none;
-width: 50px;
-height: 50px;
+width: 35px;
+height: 35px;
 background-size: cover;
 cursor: pointer;
 }
@@ -42,8 +47,8 @@ cursor: pointer;
 }
 .musicBtn{
   display: flex;
-  margin-top: -60px;
-  margin-left:-150px;
+  margin-top: -44px;
+  margin-left:-120px;
 }
 
 .img-button{

@@ -3,30 +3,46 @@ export function show_sheet(json){
     const count = json.rhythm[0]
     const length = json.rhythm[2]
     var index = 0
-    console.log(json.notes.length);
+    
+    console.log("note 수:" +json.notes.length);
+    console.log("총 길이: "+json.length);
     if(json.notes.length>0){
-        for(let i=0;i<json.notes.length;){
-            if(i%16==0){
+        const total_length = json.notes[json.notes.length-1].start + json.notes[json.notes.length-1].length;
+        console.log("TOTAL LENGTH"+total_length)
+        var bar = 0
+        for(let i=0;i<total_length;){ // 
+            if(i==bar){ 
                 result += '|'
             }
-            
-            if(json.notes[index].start == i){
-                result += '[';
-                while(json.notes.length>index && json.notes[index].start == i){
-                    result += `${to_abc(json.notes[index].pitch)}${json.notes[index].length}/2`
-                    index += 1;
+            if(index < json.notes.length){
+                if(json.notes[index].start == i){
+                    result += '[';
+                    while(json.notes.length>index && json.notes[index].start == i){
+                        result += `${to_abc(json.notes[index].pitch)}${json.notes[index].length}/2`
+                        index += 1;
+                    }
+                    result += ']'
+                    
+                    if(i+json.notes[index-1].length>bar+4*count){
+                        bar += 4*count;
+                        result += '|'
+                    }else if(i+json.notes[index-1].length==bar+4*count){
+                        bar += 4 * count;
+                    }
+                    
+                    i += json.notes[index-1].length;
+                    
+                }else{
+                    result += `z${(json.notes[index].start - i)}/2`
+                    i = json.notes[index].start;
+                    
                 }
-                result += ']'
-                i += json.notes[index-1].length;
-            }else{
-                result += `z${(json.notes[index].start - i)}/2`
-                i = json.notes[index].start;
             }
         }
     }
     result += "||"
     result += "\n\`\`\`"
-    console.log(result)
+    console.log("####### parse 결과: "+ result)
     return result
 }
 

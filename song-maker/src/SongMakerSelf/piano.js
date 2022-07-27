@@ -14,6 +14,10 @@ const Piano = (props) => {
     const note_type=props.note_type; //두 번 전달 거침
     const rhythm=props.rhythm; //두 번 전달 거침
 
+    // var noteName=['C4', '', 'D4', '', 'E4', 'F4', '', 'G4', '', 'A4', '', 'B4',
+    //     'C5', '', 'D5', '', 'E5', 'F5', '', 'G5', '', 'A5', '', 'B5',
+    //     'C6']
+
     const [json,setJson] = useState(JSON.parse(JSON.stringify({
         "tempo": 130,
         "length": 20,
@@ -121,7 +125,11 @@ const Piano = (props) => {
         setNoteTag(noteTag.filter(user=>user.props.id!==id));
         //note 배열에 삭제
         setNotes(notes.filter(user=>user.id!==id));
-
+        var Array=sortArray(notes);
+        Array = Array.filter(user=>user.id!==id);
+        setJson((json)=>{
+            return {...json, tempo: tempo, length: total_length, notes: Array}
+        })
         setNumberOfNotes(prevNumber=>prevNumber-1);
     }
     
@@ -153,6 +161,8 @@ const Piano = (props) => {
         }).then((res)=>{
             console.log("RES")
             console.log(res)
+
+            // console.log(res.data);
         })
     
     }
@@ -168,6 +178,12 @@ const Piano = (props) => {
     return (
         <div>
         <div className='gridAndBtn'>
+            {/* <div className='noteName'>
+            {noteName.map(note=>{
+                return (<p className='singleNoteName'>{note}</p> )
+            })
+
+            }</div> */}
         <div id="grid" className="grid" style={style} onClick={onClick}>
             {noteTag.map(note=>{
                 return <div key={key++} onClick={(event)=>{removeNotes(note.props.id); event.stopPropagation()}}>{note}</div>
