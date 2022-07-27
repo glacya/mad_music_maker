@@ -5,6 +5,7 @@ body,
     width: 100%;
     margin: 0;
     /* border-radius: 40px 40px; */
+    display: flex;
 }
 .grid {
     background-image:
@@ -12,4 +13,30 @@ body,
       repeating-linear-gradient(90deg, #ccc 0 1px, transparent 1px 100%);
     background-size: 20px 12px;
     
+}
+.gridAndBtn{
+  display: flex;
+}
+
+input.img-button{
+  background: url("img/play.png") no-repeat;
+  border: none;
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  /* object-fit: cover; */
+  cursor: pointer;
+}
+input.music-add{
+background: url("img/musicAdd.png");
+border: none;
+width: 50px;
+height: 50px;
+background-size: cover;
+cursor: pointer;
+}
+
+.clickBtn{
+  display: block;
+  margin:auto;
 }

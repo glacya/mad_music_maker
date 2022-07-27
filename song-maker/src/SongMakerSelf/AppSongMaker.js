@@ -28,7 +28,7 @@ const AppSongMaker =()=>{
 
     return(
     <div >
-      
+      <div className='noteAndAdd'>
       <form >
         <div className='inputs'>
         <img src={musicImg} 
@@ -47,7 +47,10 @@ const AppSongMaker =()=>{
           <h5>Tempo: </h5>
           <input className="inputInfo" type="number" onChange={(e)=>setInputTempo(e.target.valueAsNumber)}></input>
           </div>
+          
           </div>
+
+
           <div className='inputNT'>
           <div className='inputNT'>
           <h5 for="noteType">Note type:</h5>
@@ -69,6 +72,7 @@ const AppSongMaker =()=>{
           <input type="submit" value="Submit" onClick={handleClick}></input>
           </div>
           </div>
+          
           </div>
           {/* <button onClick={getNoteLength}>입력</button> */}
           {/* <NoteLength inputValue={inputValue} />
@@ -76,8 +80,10 @@ const AppSongMaker =()=>{
           <p>NoteType Selected: {Selected}</p>
           <p>NoteType Selected: {Selected2}</p> */}
         {/* <SongMakerSelf column={50} noteLength={inputValue} tempo={inputTempo} note_type={Selected} rhythm={Selected2}/> */}
-        <Piano  column={64} noteLength={inputValue} tempo={inputTempo} note_type={Selected} rhythm={Selected2}/>
+        <Piano noteLength={inputValue} tempo={inputTempo} note_type={Selected} rhythm={Selected2}/>
       </form>
+      
+      </div>
       <div >
         <StrictMode>
           <Show />
