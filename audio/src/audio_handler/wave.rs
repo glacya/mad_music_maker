@@ -61,3 +61,32 @@ pub fn wave_synth1(amplitude: usize, frequency: f64, index: usize) -> f64 {
     amp = amp * amp * amp;
     amp * ampf
 }
+
+/// Computes Synth2 wave value.
+pub fn wave_synth2(amplitude: usize, frequency: f64, index: usize) -> f64 {
+    let a1 = wave_saw(amplitude / 2, frequency, index);
+    let a2 = wave_triangle(amplitude / 6, frequency * f64::powf(2.0, 7.0 / 12.0), index);
+    let a3 = wave_saw(amplitude / 3, frequency * 2.0, index);
+    a1 + a2 + a3
+}
+
+/// Computes Kick wave value.
+pub fn wave_kick(amplitude: usize, index: usize) -> f64 {
+    let index = index as f64;
+    let amp = wave_saw(amplitude / 5, index / 100.0, index as usize);
+    amplitude as f64 * amp
+}
+
+/// Computes Snare wave value.
+pub fn wave_snare(amplitude: usize, index: usize) -> f64 {
+    // Tweak those parameters.
+    let index = index as f64;
+    let mut amp = 0.0;
+    for i in 1..6 {
+        let i = i as f64;
+        let mul = 60.0 * i;
+        let coeff = 100.0 * i;
+        amp += f64::sin(mul * (index * (coeff - index)) / coeff);
+    }
+    amplitude as f64 * amp
+}

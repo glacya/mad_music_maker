@@ -12,18 +12,24 @@ pub enum NoteType {
     Triangle,
     Saw,
     Synth1,
+    Synth2,
+    Kick,
+    Snare,
 }
 
 impl NoteType {
-    pub fn note_type(name: &str) -> NoteType {
-        match name {
+    pub fn note_type(name: &str) -> Result<NoteType, ()> {
+        Ok(match name {
             "sine" => NoteType::Sine,
             "square" => NoteType::Square,
             "triangle" => NoteType::Triangle,
             "saw" => NoteType::Saw,
             "synth1" => NoteType::Synth1,
-            _ => panic!("aaa"),
-        }
+            "synth2" => NoteType::Synth2,
+            "kick" => NoteType::Kick,
+            "snare" => NoteType::Snare,
+            _ => return Err(()),
+        })
     }
 }
 
@@ -49,17 +55,19 @@ impl Note {
     }
 
     // Get frequency of current note, in Hz.
-    // Pitch A4 has 440Hz frequency.
+    // Pitch A3 has 220Hz frequency.
     pub fn get_frequency(&self) -> f64 {
+        let standard_frequency = 220.0;
         let pitch_num = (self.pitch + 3) as f64;
-        let pitch_distance = f64::ln(2.0) * pitch_num / 12.0 + f64::ln(440.0);
+        let pitch_distance = f64::ln(2.0) * pitch_num / 12.0 + f64::ln(standard_frequency);
         f64::exp(pitch_distance)
     }
 
     /// Computes wave function according to note type.
     /// TODO: Implement phase of wave function.
-    pub fn compute_wave(&self, amplitude: usize, index: usize) -> f64 {
-        let frequency = self.get_frequency() / 2.0;
+    pub fn compute_wave(&self, amplitude: usize, index: usize, chunks_per_length: usize) -> f64 {
+        let frequency = self.get_frequency();
+        let relative_index = index - chunks_per_length * self.start;
         match self.note_type {
             NoteType::Sine => {
                 wave::wave_sine(amplitude, frequency, index)
@@ -76,27 +84,46 @@ impl Note {
             NoteType::Synth1 => {
                 wave::wave_synth1(amplitude, frequency, index)
             }
+            NoteType::Synth2 => {
+                wave::wave_synth2(amplitude, frequency, index)
+            }
+            NoteType::Kick => {
+                wave::wave_kick(amplitude, relative_index)
+            }
+            NoteType::Snare => {
+                wave::wave_snare(amplitude, relative_index)
+            }
         }
     }
 
     /// Computes adsr function according to note type.
     pub fn compute_adsr(&self, chunks_per_length: usize, current_index: usize) -> f64 {
         let start_index = chunks_per_length * self.start;
+        let relative_index = current_index - start_index;
         match self.note_type {
             NoteType::Sine => {
-                adsr::adsr_full_linear(current_index, start_index)
+                adsr::adsr_full_linear(relative_index)
             }
             NoteType::Square => {
-                adsr::adsr_plain(current_index, start_index)
+                adsr::adsr_cliff(relative_index)
             }
             NoteType::Triangle => {
-                adsr::adsr_plain(current_index, start_index)
+                adsr::adsr_plain(relative_index)
             }
             NoteType::Saw => {
-                adsr::adsr_plain(current_index, start_index)
+                adsr::adsr_plain(relative_index)
             }
             NoteType::Synth1 => {
-                adsr::adsr_full_exponential(current_index, start_index)
+                adsr::adsr_full_exponential(relative_index)
+            }
+            NoteType::Synth2 => {
+                adsr::adsr_full_exponential(relative_index)
+            }
+            NoteType::Kick => {
+                adsr::adsr_percussion(relative_index)
+            }
+            NoteType::Snare => {
+                adsr::adsr_percussion(relative_index)
             }
         }
     }
@@ -142,7 +169,7 @@ impl Sheet {
 
         let tempo = Self::real::<usize>(content["tempo"].as_usize())?;
         let total_length = Self::real::<usize>(content["total_length"].as_usize())?;
-        if (total_length == 0) {
+        if total_length == 0 {
             eprintln!("Total length should not be zero.");
             return Err(())
         }
@@ -160,11 +187,12 @@ impl Sheet {
             let length = Self::real::<usize>(note_data["length"].as_usize())?;
             let pitch = Self::real::<usize>(note_data["pitch"].as_usize())?;
             let note_type = Self::real::<&str>(note_data["note_type"].as_str())?;
+            let note_type = NoteType::note_type(note_type)?;
             sheet.notes.push(Note::new(
                 start,
                 length,
                 pitch,
-                NoteType::note_type(note_type),
+                note_type,
             ))
         }
 
@@ -253,7 +281,7 @@ impl Sheet {
             let mut amplitude = 65536;
             for note in notes_alive.iter() {
                 let adsr_value = note.compute_adsr(chunks_per_length, i);
-                let wave_value = note.compute_wave(5000, i);
+                let wave_value = note.compute_wave(5000, i, chunks_per_length);
                 amplitude += (adsr_value * wave_value) as usize;
                 amplitude %= 65536;
             }

@@ -139,7 +139,9 @@ app.post('/api/audio_playtest', (req, res) => {
             process.chdir('../audio');
             const {stdout, stderr} = await exec(`cargo run playtest${playtest_id}`);
             if (stdout === "Success") {
-                res.sendFile(path.join(__dirname, `../audio/wavs/playtest${playtest_id}.wav`), (error) => {
+                res.header({
+                    "Content-Type": "audio/wav"
+                }).sendFile(path.join(__dirname, `../audio/wavs/playtest${playtest_id}.wav`), (error) => {
                     if (error) {
                         console.log(`Sending file playtest${playtest_id}.wav failed.`);
                         console.log(error);
