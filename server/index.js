@@ -46,7 +46,7 @@ app.get("/", (req, res) => {
     res.status(200).sendFile(path.join(__dirname, "test.html"));
 });
 
-app.post("/login", (req, res) => {
+app.post("/api/login", (req, res) => {
     const id = req.body.id;
     const pw = req.body.pw;
 
@@ -81,13 +81,12 @@ app.post("/login", (req, res) => {
     }
 });
 
-app.post("/register", (req, res) => {
+app.post("/api/register", (req, res) => {
     const id = req.body.id;
     const pw = req.body.pw;
-    const username = req.body.username;
-    debug(`POST /register\t${id}, ${pw}, ${username}`);
+    debug(`POST /register\t${id}, ${pw}`);
 
-    if (id !== undefined && pw !== undefined && username !== undefined) {
+    if (id !== undefined && pw !== undefined) {
         connection.query('select id from users where id=?', [id], async (error, rows, field) => {
             if (error) {
                 // Query error.
@@ -102,7 +101,7 @@ app.post("/register", (req, res) => {
             else {
                 debug("OK, you can use this id..");
                 const hashed_pw = await hash_password(pw);
-                connection.query('insert into users(id, pw, username, salt) values(?, ?, ?, ?)', [id, hashed_pw.hashed_pw, username, hashed_pw.salt], (error, rows, field) => {
+                connection.query('insert into users(id, pw, salt) values(?, ?, ?)', [id, hashed_pw.hashed_pw, hashed_pw.salt], (error, rows, field) => {
                     if (error) {
                         // Query error again..
                         debug("Register failed due to query error 2");
@@ -110,7 +109,7 @@ app.post("/register", (req, res) => {
                         res.status(400).send(error.message);
                     }
                     else {
-                        debug(`User ${id}, ${username} successfully registered.`);
+                        debug(`User ${id}, successfully registered.`);
                         // Redirect to login page.
                         res.status(200).send("Register succeeded.");
                     }
@@ -162,7 +161,7 @@ app.post('/api/audio_playtest', (req, res) => {
 });
 
 // Upload audio.
-app.post('/audio_upload', (req, res) => {
+app.post('/api/audio_upload', (req, res) => {
     debug("POST /audio_upload");
 
     const author_id = req.body.author_id;
@@ -208,6 +207,81 @@ app.post('/audio_upload', (req, res) => {
         });
     }
 });
+
+var temporary_map = new Map();
+
+// Store temporary data.
+app.post('/api/temporary', (req, res) => {
+    const id = req.body.id;
+    debug(`POST /temporary`);
+    console.log(JSON.stringify(req.body));
+    if (id === undefined) {
+        res.status(400).send("You must include id.");
+    }
+    else {
+        res.status(200).send("Saved temporary data.");
+        temporary_map.set(id, JSON.stringify(req.body));
+    }
+});
+
+app.get('/api/temporary/:id', (req, res) => {
+    const id = req.params.id;
+    debug(`GET /temporary/${id}`);
+    if (id === undefined) {
+        res.status(400).send("Undefined ID is not allowed");
+    }
+    else {
+        const temp_data = temporary_map.get(id);
+        if (temp_data === undefined) {
+            res.status(400).send("Server does not have temporary data for this id.");
+        }
+        else {
+            res.header({"Content-Type": "application/json"}).status(200).send(temp_data);
+        }
+    }
+});
+
+app.get('/api/audio_list/:id', (req, res) => {
+    const id = req.params.id;
+    debug(`GET /audio_list/${id}`);
+    if (id === undefined) {
+        res.status(400).send("Undefined ID is not allowed.");
+    }
+    else {
+        connection.query('select * from musics where author_id=?', [id], (error, rows, field) => {
+            if (error) {
+                console.log("Something wrong while fetching audio_list.");
+                console.log(error);
+                res.status(500).send("Query Error");
+            }
+            else {
+                res.header({"Content-Type": "application/json"}).status(200).send(JSON.stringify(rows));
+            }
+        })
+    }
+});
+
+app.get('/api/audio/:id', (req, res) => {
+    const id = req.params.id;
+    debug(`GET /audio/${id}`);
+    if (id === undefined) {
+        res.status(400).send("Undefined ID is not allowed.");
+    }
+    else {
+        res.header({
+            "Content-Type": "audio/wav"
+        }).sendFile(path.join(__dirname, `../audio/wavs/${id}.wav`), (error) => {
+            if (error) {
+                console.log(`Sending file ${id}.wav failed.`);
+                console.log(error);
+            }
+            else {
+                console.log(`Sending file ${id}.wav succeeded.`);
+                playtest_id += 1;
+            }
+        });
+    }
+})
 
 app.listen(port, () => {
     console.log("<> Server start. Running on port " + port);

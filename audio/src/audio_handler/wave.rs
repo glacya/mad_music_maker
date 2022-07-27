@@ -74,7 +74,7 @@ pub fn wave_synth2(amplitude: usize, frequency: f64, index: usize) -> f64 {
 pub fn wave_kick(amplitude: usize, index: usize) -> f64 {
     let index = index as f64;
     let amp = wave_saw(amplitude / 5, index / 100.0, index as usize);
-    amplitude as f64 * amp
+    amp * amplitude as f64 / 20.0
 }
 
 /// Computes Snare wave value.
