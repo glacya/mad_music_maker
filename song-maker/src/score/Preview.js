@@ -1,27 +1,11 @@
-import ReactMarkdown from "react-markdown";
-import Score from "./Score";
-import uniqid from "uniqid";
+import SheetMusic from "@slnsw/react-sheet-music";
 
-export default function Preview({ value, onEvent, isPlaying }) {
-  const components = {
-    code({ node, inline, className, children, ...props }) {
-      const match = /language-(\w+)/.exec(className || "");
-      return !inline && match && match[1] === "abc" ? (
-        <Score
-          id={uniqid()}
-          notation={`${children}`.replace(/\n$/, "")}
-          //onEvent={onEvent}
-          //isPlaying={isPlaying}
-        />
-      ) : (
-        <code className={className} {...props} />
-      );
-    }
-  };
-
-  return (
-    <ReactMarkdown className="preview" components={components}>
-      {value}
-    </ReactMarkdown>
-  );
+export default function Preview({value}) {
+  console.log("############## Preview.js")
+  console.log("value: "+value)
+  return(
+    <div>
+      <SheetMusic notation = {value} />
+    </div>
+  )
 }

@@ -1,4 +1,5 @@
 .App {
+    display: flex;
     text-align: center;
   }
   
@@ -37,11 +38,114 @@
     }
   }
   
-  input {
+  .header{
+    font-size: 15px;
+    font-style:italic;
+    margin-top: 20px;
+    margin-left: 10px;
+  }
+
+  .inputInfo {
     margin:10px;
     width: 100px;
     height:20px;
     border:0;
-    border-radius: 15%;
+    border-radius: 20%;
     background-color:whitesmoke;
   }
+
+ .AppSongMakerSrc{
+    margin-top: 20px;
+  }
+
+.inputNT{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  margin-left:10px;
+  margin-right: 10px;
+}
+
+/* form{
+  margin-left: 30px;
+  margin-right: 30px;
+} */
+.inputs{
+  display: flex;
+  margin-top:10px;
+  
+}
+/* .pianoInput{
+  display: flex;
+} */
+.noteAndAdd{
+  display: flex;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+/* .addNoteBtn{
+  height: 301px;
+  margin-top: 82px;
+  margin-right: 10px;
+} */
+
+.inputNT select {
+  margin:10px;
+  width: 100px;
+  height:20px;
+  border:0;
+  border-color: whitesmoke;
+  border-radius: 20%;
+  background-color:whitesmoke;
+  outline-color: whitesmoke;
+}
+select{
+  width: 100px;
+  height:20px;
+  border:0;
+  border-color: whitesmoke;
+  border-radius: 20%;
+  background-color:whitesmoke;
+  outline-color: whitesmoke;
+}
+
+h5{
+  /* font: semi-condensed ; */
+}
+
+
+
+.selectType{
+  margin-top: -12px;
+}
+.OneRow{
+  margin-top: -12px;
+  margin-left:10px;
+}
+.row-add{
+  background: url("img/plusing.png") no-repeat;
+  border: none;
+  width: 35px;
+  height: 35px;
+  background-size: cover;
+
+  /* object-fit: cover; */
+  cursor: pointer;
+  
+}
+.rowrow{
+  margin-top: 50px;
+  text-align: center;
+}
+.inputInfo{
+  width: 100px;
+  height:20px;
+  border:0;
+  border-color: whitesmoke;
+  border-radius: 20%;
+  background-color:whitesmoke;
+  outline-color: whitesmoke;
+}
+.h55{
+  margin-left:30px;
+}
