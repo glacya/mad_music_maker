@@ -40,3 +40,12 @@ cursor: pointer;
   display: block;
   margin:auto;
 }
+.musicBtn{
+  display: flex;
+  margin-top: -60px;
+  margin-left:-150px;
+}
+
+.img-button{
+  margin-left:25px;
+}

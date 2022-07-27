@@ -2,13 +2,13 @@ import React, {useState, useEffect, StrictMode} from 'react'
 import './AppSongMaker.css';
 import SongMakerSelf from './SongMakerSelf';
 import musicImg from './img/music.png'
-import Show from '../score/show'
+
 import Piano from './piano';
 const AppSongMaker =()=>{
     const [inputValue,setInputValue]=useState(1)
     const [inputTempo, setInputTempo]=useState(120)
-    const [Selected, setSelected]=useState('');
-    const [Selected2, setSelected2]=useState('');
+    const [Selected, setSelected]=useState('sine');
+    const [Selected2, setSelected2]=useState('4/4');
 
     // const [inputNoteType, setInputNoteType]=useState()
     const handleSelect=(e)=>{
@@ -56,7 +56,7 @@ const AppSongMaker =()=>{
           <h5 for="noteType">Note type:</h5>
           
           <select name="noteType" id="noteTypes" onChange={handleSelect} value={Selected}>
-            <option value="sin">sin</option>
+            <option value="sin" selected>sin</option>
             <option value="square">square</option>
             <option value="triangle">triangle</option>
             <option value="saw">saw</option>
@@ -66,8 +66,8 @@ const AppSongMaker =()=>{
           <div className='inputNT'>
           <h5 for="noteType">Rhythm:</h5>
           <select name="rhythm" id="rhythms" onChange={handleSelect2} value={Selected2}>
-            <option>4/4</option>
-            <option>3/4</option>
+            <option >3/4</option>
+            <option selected>4/4</option>
           </select>
           <input type="submit" value="Submit" onClick={handleClick}></input>
           </div>
@@ -83,11 +83,6 @@ const AppSongMaker =()=>{
         <Piano noteLength={inputValue} tempo={inputTempo} note_type={Selected} rhythm={Selected2}/>
       </form>
       
-      </div>
-      <div >
-        <StrictMode>
-          <Show />
-        </StrictMode>
       </div>
       
     </div>

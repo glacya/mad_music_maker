@@ -1,29 +1,33 @@
 import  axios  from 'axios';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import { start } from 'tone';
 import './grid.css';
+import Sheet from '../score/sheet'
 
 var key = 0;
 
-//delete 구현 필요***********
-//key 확인!!!
 
 const Piano = (props) => {
-    const [column, setColumn]=useState(64);
+    const [column, setColumn]=useState(32);
     const length=props.noteLength;
     const tempo=props.tempo;
     const note_type=props.note_type; //두 번 전달 거침
     const rhythm=props.rhythm; //두 번 전달 거침
-    let clicked=false;
 
-    const [total_length, setTotalLength]=useState(0);
+    const [json,setJson] = useState(JSON.parse(JSON.stringify({
+        "tempo": 130,
+        "length": 20,
+        "number_of_notes": 4,
+        "rhythm" : "4/4",
+        "notes": []
+    })));
+
+    const [total_length, setTotalLength]=useState(32);
     const [number_of_notes, setNumberOfNotes]=useState(0);
 
-    const [noteTag, setNoteTag]=useState([]);
-    const [notes, setNotes] = useState([]);
+    const [noteTag, setNoteTag]=useState([]);//<Note/> 배열
+    const [notes, setNotes] = useState([]); //post 요청 json파일 배열
     const [id, setId]=useState(0);
-
-    // const [length, setNoteLength] = useState(1);
-    // const [key, setKey] = useState(0);
 
     const colors=[
         "#E33059",
@@ -50,64 +54,93 @@ const Piano = (props) => {
 
     
 
+    const sortArray=(notes)=>{
+        console.log("$$$$$$$$$$$$$$$$$$$$$$$$$")
+        console.log("node num:",number_of_notes)
+        console.log("notes in sortArray: ",notes);
+        //notes 배열 정렬
+        const startAscending=[...notes].sort((a,b)=>a.start-b.start);
+        console.log("startAscending:  ",startAscending); ///확인하기!!!!!//pitch까지는 구현 못함...
+        // setNotes(startAscending);
+        //total_length
+        // console.log("total_length!!!: ",startAscending[number_of_notes-1].start+startAscending[number_of_notes-1].length);
+        // total_length=startAscending[number_of_notes-1].start+startAscending[number_of_notes-1].length-1-startAscending[0].start+1;
+        // setTotalLength(startAscending[number_of_notes-1].start+startAscending[number_of_notes-1].length-1-startAscending[0].start+1);
+        console.log("TotalLength: sortArray : ",total_length);
+
+        return startAscending
+    }
+
+    // useEffect(()=>{
+    //     console.log("note in useEffect!!", notes);
+    //     sortArray(notes)
+    // }, [notes]);
+
+
     const onClick = (event) => {
         const x = Math.floor((event.nativeEvent.offsetX) / 20)
         const y = 24 - Math.floor((event.nativeEvent.offsetY) / 12)
         console.log(`${x}, ${y}`)
 
-        if(clicked==false){
-            //noteTag 배열에 추가
-            setId(prevnum=>prevnum+1);
-            const note=(<Note color={colors[parseInt(y)%12]} width={`${20 * length}px`} marginLeft={`${x * 20+0.5}px`} marginTop={`${(24 - y) * 12+0.5}px`}/>)
-            setNoteTag(noteTag.concat(note))
         
-            //note 배열에 추가
-            const notee={//id 추가해야??
-                id: id,
-                start: x,
-                length: length,
-                pitch:y,
-                note_type: note_type
-            };
-            setNotes(notes.concat(notee));
+        
+        //noteTag 배열에 추가
+        setId(prevnum=>prevnum+1);
+        const note=(<Note id={id} color={colors[parseInt(y)%12]} width={`${20 * length}px`} marginLeft={`${x * 20+0.5}px`} marginTop={`${(24 - y) * 12+0.5}px`}/>)
+        setNoteTag(noteTag.concat(note))
+        
 
-            setNumberOfNotes(prevNumber=>prevNumber+1);
-        }
-        else{
-            //noteTag 배열에 삭제
-            setNoteTag(noteTag.filter(user=>user.id!==id));
-            //note 배열에 삭제
-            setNotes(notes.filter(user=>user.id!==id));
-
-            setNumberOfNotes(prevNumber=>prevNumber-1);
-        }
-        
-        
-    };
     
-    const sortArray=()=>{
-        console.log("$$$$$$$$$$$$$$$$$$$$$$$$$4")
-        console.log("node num:",number_of_notes)
-        console.log(notes)
-        //notes 배열 정렬
-        const startAscending=[...notes].sort((a,b)=>a.start-b.start);
-        console.log("startAscending:  ",startAscending); ///확인하기!!!!!//pitch까지는 구현 못함...
+        //note 배열에 추가
+        const notee={//id 추가해야??
+            id: id,
+            start: x,
+            length: length,
+            pitch:y,
+            note_type: note_type
+        };
+        setNotes(notes.concat(notee));
+        
+        console.log("notes!!!!!!정렬 전!!", notes);
 
-        //total_length
-        console.log("total_length!!!: ",startAscending[number_of_notes-1].start+startAscending[number_of_notes-1].length);
-        // total_length=startAscending[number_of_notes-1].start+startAscending[number_of_notes-1].length-1-startAscending[0].start+1;
-        setTotalLength(startAscending[number_of_notes-1].start+startAscending[number_of_notes-1].length-1-startAscending[0].start+1);
-        console.log("TotalLength: ",total_length);
+        const Array=sortArray(notes.concat(notee)); //회준오빠 : Array 사용하기!!!!
+        
 
-        return startAscending
+        console.log("정렬 후!!!", notes);
+        console.log("Array!!!",Array);
+
+        setJson((json)=>{
+            return {...json, notes: Array}
+        })
+        
+        setNumberOfNotes(prevNumber=>prevNumber+1);
+    };
+
+    const removeNotes=(id)=>{
+        //noteTag 배열에 삭제
+        setNoteTag(noteTag.filter(user=>user.props.id!==id));
+        //note 배열에 삭제
+        setNotes(notes.filter(user=>user.id!==id));
+
+        setNumberOfNotes(prevNumber=>prevNumber-1);
     }
+    
+    
 
     async function playMusic(e){
         e.preventDefault();
 
-        const startAscending=sortArray();
+        const startAscending=sortArray(notes);
         
-        console.log("TotalLength:!! ",total_length);
+        console.log("TotalLength:!! real!!! ",total_length);
+        console.log(tempo);
+        console.log(total_length);
+        console.log(number_of_notes);
+        console.log(rhythm);
+        console.log(notes);
+
+        console.log("startAscending!!!", startAscending);
+
         axios.post("/api/audio_playtest",JSON.stringify({
             tempo: tempo,
             total_length: total_length,
@@ -128,24 +161,25 @@ const Piano = (props) => {
         e.preventDefault();
         
         setColumn(column+16);
+        setTotalLength(total_length+16);
     }
 
 
     return (
+        <div>
         <div className='gridAndBtn'>
-        {/* <button>Test Sound</button> */}
         <div id="grid" className="grid" style={style} onClick={onClick}>
             {noteTag.map(note=>{
-                // setKey(x=>x+1);
-                return <div key={key++}>{note}</div>
+                return <div key={key++} onClick={(event)=>{removeNotes(note.props.id); event.stopPropagation()}}>{note}</div>
             }
             )}
         </div>
-        {/* <input className='addNoteBtn' type="button" value={"+"}></input> */}
-        <div className='clickBtn'>
+        <div className='musicBtn'>
         <input className='music-add' type="button" onClick={addMusic}/>
         <input className='img-button' type="button" onClick={playMusic}/>
         </div>
+        </div>
+        <Sheet json = {json}/>
         </div>
     )
 }
@@ -163,9 +197,7 @@ const Note = (props) => {
     };
 
     return (
-        
         <div key={++key} style={style}></div>
-        
     )
 }
 

@@ -1,85 +1,28 @@
-const json = JSON.parse(JSON.stringify({
-    "tempo": 130,
-    "length": 20,
-    "number_of_notes": 4,
-    "rhythm" : "4/4",
-    "notes": [
-        {
-            "start": 1,
-            "length": 4,
-            "pitch": 4,
-            "note_type": "saw"
-        },
-        {
-            "start": 5,
-            "length": 1,
-            "pitch": 2,
-            "note_type": "saw"
-        },
-        {
-            "start": 5,
-            "length": 1,
-            "pitch": 12,
-            "note_type": "saw"
-        },
-        {
-            "start": 6,
-            "length": 1,
-            "pitch": 0,
-            "note_type": "saw"
-        },
-        {
-            "start": 7,
-            "length": 1,
-            "pitch": 2,
-            "note_type": "saw"
-        },
-        {
-            "start": 7,
-            "length": 1,
-            "pitch": 5,
-            "note_type": "saw"
-        },
-        {
-            "start": 11,
-            "length": 1,
-            "pitch": 10,
-            "note_type": "saw"
-        },
-        {
-            "start": 16,
-            "length": 4,
-            "pitch": 0,
-            "note_type": "saw"
-        }
-    ]
-}))
-
-show_sheet(json)
-
-function show_sheet(json){
+export function show_sheet(json){
     var result = `\`\`\`abc\nX: 1\nM: ${json.rhythm}\nK: C\n`
     const count = json.rhythm[0]
     const length = json.rhythm[2]
     var index = 0
-    for(i=0;i<json.length;){
-        if(i%16==0){
-            result += '|'
-        }
-        
-        if(json.notes[index].start == i){
-            result += '[';
-            while(json.notes.length>index && json.notes[index].start == i){
-                result += `${to_abc(json.notes[index].pitch)}${json.notes[index].length}/2`
-                index += 1;
+    console.log(json.notes.length);
+    if(json.notes.length>0){
+        for(let i=0;i<json.notes.length;){
+            if(i%16==0){
+                result += '|'
             }
-            result += ']'
-            i += json.notes[index-1].length;
-        }else{
-            result += `z${(json.notes[index].start - i)}/2`
-            i = json.notes[index].start;
+            
+            if(json.notes[index].start == i){
+                result += '[';
+                while(json.notes.length>index && json.notes[index].start == i){
+                    result += `${to_abc(json.notes[index].pitch)}${json.notes[index].length}/2`
+                    index += 1;
+                }
+                result += ']'
+                i += json.notes[index-1].length;
+            }else{
+                result += `z${(json.notes[index].start - i)}/2`
+                i = json.notes[index].start;
+            }
         }
-        console.log(i);
     }
     result += "||"
     result += "\n\`\`\`"
@@ -168,4 +111,4 @@ function to_abc(pitch){
         default:
             break;
     }
-};
+}
