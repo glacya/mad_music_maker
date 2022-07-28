@@ -1,20 +1,29 @@
+import  axios  from 'axios';
 import React, {useState, useEffect, StrictMode} from 'react'
 import '../SongMakerSelf/AppSongMaker.css'
 // import SongMakerSelf from './SongMakerSelf';
 import musicImg from '../SongMakerSelf/img/music.png'
 import Piano from '../SongMakerSelf/piano';
-import Sheet from '../score/sheet'
+import Sheet from '../score/sheet_by_string'
+import { useNavigate } from "react-router-dom";
 
 var key=0;
+// var i=0;
+// var a=['a','b','c','d','e'];
 
 const SongMakerGroup=()=>{
-
+    
+    let navigate=useNavigate();
+    const userId="jina"
     const [inputValue,setInputValue]=useState(1)
     const [inputTempo, setInputTempo]=useState(120)
     const [Selected, setSelected]=useState('sine');
     const [Selected2, setSelected2]=useState('4/4');
 
     const [rowMake, setRowMake]=useState([]);//rowMake 배열
+    const [jsonStringArr, setJsonStringArr]=useState([]);//jsonString 배열
+    const [instrument, setInstrument]=useState([]);
+    const [local, setLocal]=useState([]);
 
     // const [inputNoteType, setInputNoteType]=useState()
     const handleSelect=(e)=>{
@@ -34,11 +43,40 @@ const SongMakerGroup=()=>{
     const addRow=(event)=>{
         event.preventDefault();
         console.log("ADDDCLICKEDDD!!!!");
-        //piano.js 화면으로 이동 (개인 작곡 화면)
-        // return(<Piano noteLength={1} tempo={154} note_type={"saw"} rhythm={"4/4"}/>)//noteLength={inputValue} tempo={inputTempo} note_type={Selected} rhythm={Selected2}
+        
+        //일단 piano.js로 보내주기
 
-        <Piano noteLength={1} tempo={154} note_type={"saw"} rhythm={"4/4"}/>
+        navigate('/music_maker');
+        
+        // return(<Piano noteLength={1} tempo={154} note_type={"saw"} rhythm={"4/4"}/>)//noteLength={inputValue} tempo={inputTempo} note_type={Selected} rhythm={Selected2}
+        
+        // <Piano noteLength={1} tempo={154} note_type={"saw"} rhythm={"4/4"}/>
     }
+
+    //get 받기
+    axios.get(`/api/temporary/${userId}`
+    , {
+        headers: {"Content-Type": 'application/json'},
+    }).then((res)=>{
+        console.log("RES")
+        console.log(res)
+        const jsonGet=res.data.value;
+        const instrumentGet=res.data.instrm;
+        setJsonStringArr(jsonStringArr.concat(
+            {instrument: instrumentGet,
+            jsonStr: jsonGet}));
+        localStorage.setItem(userId, JSON.stringify(jsonStringArr.concat(
+            {instrument: instrumentGet,
+            jsonStr: jsonGet})));
+        console.log("JsonStringARr!!!",jsonStringArr); //한 번 늦게 업데이트 됨
+        // setInstrument(instrument?.concat(instrumentGet));
+        // console.log("instrumentArr!!!", instrument);
+    });
+    
+    useEffect(()=>{
+        setLocal(JSON.parse(localStorage.getItem(userId)));
+        console.log(localStorage.getItem(userId))
+    },[]);
 
     return (
         <div >
@@ -71,7 +109,7 @@ const SongMakerGroup=()=>{
           <h5 for="noteType">rhythm:  </h5>
           <select name="rhythm" id="rhythms" onChange={handleSelect2} value={Selected2}>
             <option >3/4</option>
-            <option selected>4/4</option>
+            <option>4/4</option>
           </select>
           {/* <input type="submit" value="Submit" onClick={handleClick}></input> */}
           </div>
@@ -95,13 +133,16 @@ const SongMakerGroup=()=>{
       
       </div>
       <div className='rowrow'>
-      <input className='row-add' type="button" onClick={addRow}>
-        {/* {
-            rowMake.map(row=>{
-                return <div key={key++}>{row}</div>
+      
+        <div>
+        {
+            local.map(row=>{
+                return (<div className='divSheet'><div className='showNoteType' key={key++}>{row.instrument}</div>
+                <Sheet string={row.jsonStr} id={row.instrument}/></div>)
             })
-        } */}
-      </input>
+        }
+        </div>
+        <input className='row-add' type="button" onClick={addRow}/>
       </div>
     </div>
     )
