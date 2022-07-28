@@ -190,17 +190,18 @@ app.post('/api/audio_upload', (req, res) => {
                         fs.unlink(path.join(__dirname, `../audio/jsons/${upload_id}.json`));
                     }
                     else {
-                        upload_id += 1;
                         console.log(`Success.`);
-                        res.status(200).send("Upload success.");
                         process.chdir('../audio');
                         const {stdout, stderr} = await exec(`cargo run ${upload_id}`);
                         if (stdout === "Success") {
                             console.log("Ok, created wav file on storage.");
+                            upload_id += 1;
+                            res.status(200).send("Upload success.");
                         }
                         else {
                             console.log(stderr);
                             console.log("Failed on creating wav file on storage...");
+                            res.status(500).send("Internal server error. Please try later.");
                         }
                         process.chdir("../server");
                     }
