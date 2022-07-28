@@ -65,7 +65,7 @@ cursor: pointer;
 }
 
 input.SongMaker{
-  background: url("img/songmaker.png");
+  background: url("img/composing.png");
   border: none;
   width: 100px;
   height: 100px;
@@ -76,7 +76,7 @@ input.SongMaker{
 }
 
 input.MyMusic{
-  background: url("img/mymusic.png");
+  background: url("img/musiclist.png");
   border: none;
   width: 100px;
   height: 100px;
@@ -89,12 +89,12 @@ input.MyMusic{
   /* text-align: center; */
   display: flex;
   align-items: center;
-  padding-top: 60px;
-  margin: 10px;
+  padding-top: 50px;
+  margin: 15px;
 }
 .real{
   color: black;
-  font-size: 15px;
+  font-size: 13px;
   margin-left:60px;
   align-items: center;
   text-decoration-line : none;
