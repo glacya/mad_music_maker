@@ -25,15 +25,24 @@ export function show_sheet(json){
                     
                     if(i+json.notes[index-1].length>bar+4*count){
                         bar += 4*count;
+                        console.log("#########" + bar)
                         result += '|'
                     }else if(i+json.notes[index-1].length==bar+4*count){
                         bar += 4 * count;
+                        console.log("###########" + bar)
                     }
                     
                     i += json.notes[index-1].length;
                     
                 }else{
                     result += `z${(json.notes[index].start - i)}/2`
+                    //if(i+json.notes[index-1]>bar+4*count)
+                    if(json.notes[index].start>bar+4*count){
+                        bar += 4*count;
+                        result += '|'
+                    }else if(json.notes[index].start==bar+4*count){
+                        bar += 4 * count;
+                    }
                     i = json.notes[index].start;
                     
                 }

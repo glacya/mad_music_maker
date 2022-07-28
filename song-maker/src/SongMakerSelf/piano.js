@@ -3,11 +3,13 @@ import React, {useState, useEffect} from 'react';
 import { start } from 'tone';
 import './grid.css';
 import Sheet from '../score/sheet'
+import {show_sheet} from '../score/parse'
 
 var key = 0;
 
 
 const Piano = (props) => {
+    const userId="jina"; //userId 하드코딩 바꾸기!!********
     const [column, setColumn]=useState(32);
     const length=props.noteLength;
     const tempo=props.tempo;
@@ -174,6 +176,23 @@ const Piano = (props) => {
         setTotalLength(total_length+16);
     }
 
+    const sendPost=(e)=>{
+        e.preventDefault();
+
+        axios.post("/api/temporary",JSON.parse(JSON.stringify({
+            id: userId,
+            instrm: note_type,
+            value: show_sheet(json)
+        }))
+        , {
+            headers: {"Content-Type": 'application/json'},
+        }).then((res)=>{
+            console.log("RES")
+            console.log(res)
+
+            // console.log(res.data);
+        })
+    }
 
     return (
         <div>
@@ -191,8 +210,10 @@ const Piano = (props) => {
             )}
         </div>
         <div className='musicBtn'>
+            <input className='send-post' type="button" onClick={sendPost}/>
         <input className='music-add' type="button" onClick={addMusic}/>
         <input className='img-button' type="button" onClick={playMusic}/>
+        
         </div>
         </div>
         <Sheet json = {json}/>

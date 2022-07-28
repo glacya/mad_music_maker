@@ -15,7 +15,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
   <Routes>
-    <Route path="/" element={<SongMakerGroup />}></Route>
+    <Route exact path="/" element={<SongMakerGroup />}></Route>
+    <Route exact path="/music_maker" element={<AppSongMaker/>}></Route>
+    <Route exact path='/song_maker_group' element={<SongMakerGroup/>}></Route>
     {/* <Route path='/songMaker' render={()=><SongMakerSelf />}/> */}
     <Route path="/entrance" element={<Entrance />}></Route>
     <Route path="/music_list" element={<MusicList />}></Route>
