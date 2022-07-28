@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "./login.css";
+import {useNavigate} from 'react-router-dom'
  
 function Login() {
+    let navigate=useNavigate();
     const [inputId, setInputId] = useState('')
     const [inputPw, setInputPw] = useState('')
  
@@ -34,6 +36,10 @@ function Login() {
         
     }
 
+    const onClickRegister=()=>{
+        
+        navigate('/register');
+    }
 
     return(
         
@@ -49,6 +55,8 @@ function Login() {
             </div>
             <div>
                 <button type='button' onClick={onClickLogin}>Login</button>
+                <button type='button' onClick={onClickRegister}>Register</button>
+
             </div>
         </div>
         
