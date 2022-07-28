@@ -139,19 +139,20 @@ app.post('/api/audio_playtest', (req, res) => {
             console.log(`cargo run playtest${playtest_id}!!`);
             const {stdout, stderr} = await exec(`cargo run playtest${playtest_id}`);
             if (stdout === "Success") {
-                res.header({
-                    "Content-Type": "audio/wav"
-                }).sendFile(path.join(__dirname, `../audio/wavs/playtest${playtest_id}.wav`), (error) => {
-                    if (error) {
-                        console.log(stderr);
-                        console.log(`Sending file playtest${playtest_id}.wav failed.`);
-                        console.log(error);
-                    }
-                    else {
-                        console.log(`Sending file playtest${playtest_id}.wav succeeded.`);
-                        playtest_id += 1;
-                    }
-                });
+                res.status(200).send(`playtest${playtest_id}.wav`);
+                // res.header({
+                //     "Content-Type": "audio/wav"
+                // }).sendFile(path.join(__dirname, `../audio/wavs/playtest${playtest_id}.wav`), (error) => {
+                //     if (error) {
+                //         console.log(stderr);
+                //         console.log(`Sending file playtest${playtest_id}.wav failed.`);
+                //         console.log(error);
+                //     }
+                //     else {
+                //         console.log(`Sending file playtest${playtest_id}.wav succeeded.`);
+                //         playtest_id += 1;
+                //     }
+                // });
                 console.log("Hmm... End?");
             }
             else {
@@ -274,7 +275,7 @@ app.get('/api/audio/:id', (req, res) => {
     }
     else {
         res.header({
-            "Content-Type": "audio/wav"
+            "Content-Type": "application/octet-stream"
         }).sendFile(path.join(__dirname, `../audio/wavs/${filename}`), (error) => {
             if (error) {
                 console.log(`Sending file ${filename} failed.`);

@@ -130,19 +130,24 @@ const SongMakerGroup=()=>{
         }
       }).then((res) => {
         console.log("OK!!");
-        let buffer = new ArrayBuffer(res.data.length);
-        let chars = new Uint8Array(buffer);
-        for (let i = 0; i < res.data.length; i++) {
-            chars[i] = res.data.charCodeAt(i);
-        }
-        const blob = new Blob([chars], {type: 'audio/wav'})
-        const url = window.URL.createObjectURL(blob)
+        console.log(res);
+        // console.log(res.data);
+        // let buffer = new ArrayBuffer(res.data.length);
+        // let chars = new Uint8Array(buffer);
+        // let dataView = new DataView(chars.buffer);
+        // for (let i = 0; i < res.data.length; i++) {
+        //     chars[i] = res.data.charCodeAt(i);
+        // }
+        
+        // const blob = new Blob([chars], {type: 'application/octet-stream'})
+        // const url = window.URL.createObjectURL(blob)
         const a = document.createElement("a")
-        a.href = url
-        a.download = `playtest.wav`
+        a.href = `http://192.249.18.201:443/api/audio/${res.data}`;
+        a.download = 'playtest.wav';
+        // a.target = '_blank'
         a.click()
         a.remove()
-        window.URL.revokeObjectURL(url);
+        // window.URL.revokeObjectURL(url);
       }
       )
     };
