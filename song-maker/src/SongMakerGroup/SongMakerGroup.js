@@ -143,6 +143,25 @@ const SongMakerGroup=()=>{
     const audioUpload = (event) => {
       event.preventDefault();
       console.log(notes);
+
+      const playtestJson = {
+        author_id: userId,
+        music_name: 'happy',
+        tempo: inputTempo,
+        total_length: total_length,
+        number_of_notes: notes.length,
+        notes: notes
+      };
+
+      axios.post('/api/audio_upload', JSON.stringify(playtestJson), {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then((res) => {
+        console.log("OK!!");
+        console.log(res.data)
+      }
+      )
     };
 
     return (
