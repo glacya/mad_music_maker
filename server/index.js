@@ -262,21 +262,21 @@ app.get('/api/audio_list/:id', (req, res) => {
 });
 
 app.get('/api/audio/:id', (req, res) => {
-    const id = req.params.id;
-    debug(`GET /audio/${id}`);
-    if (id === undefined) {
+    const filename = req.params.id;
+    debug(`GET /audio/${filename}`);
+    if (filename === undefined) {
         res.status(400).send("Undefined ID is not allowed.");
     }
     else {
         res.header({
             "Content-Type": "audio/wav"
-        }).sendFile(path.join(__dirname, `../audio/wavs/${id}.wav`), (error) => {
+        }).sendFile(path.join(__dirname, `../audio/wavs/${filename}`), (error) => {
             if (error) {
-                console.log(`Sending file ${id}.wav failed.`);
+                console.log(`Sending file ${filename} failed.`);
                 console.log(error);
             }
             else {
-                console.log(`Sending file ${id}.wav succeeded.`);
+                console.log(`Sending file ${filename} succeeded.`);
                 playtest_id += 1;
             }
         });

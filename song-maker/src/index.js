@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import AppSongMaker from './SongMakerSelf/AppSongMaker';
 import SongMakerGroup from './SongMakerGroup/SongMakerGroup';
+import Entrance from './entrance/Entrance';
+import MusicList from './music_list/Musiclist';
 
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import SongMakerSelf from './SongMakerSelf/SongMakerSelf';
@@ -15,7 +17,9 @@ root.render(
   <Routes>
     <Route path="/" element={<SongMakerGroup />}></Route>
     {/* <Route path='/songMaker' render={()=><SongMakerSelf />}/> */}
-    {/* <Route path="/hello" element={<Product />}></Route> */}
+    <Route path="/entrance" element={<Entrance />}></Route>
+    <Route path="/music_list" element={<MusicList />}></Route>
+    <Route path="/song_maker_group" element={<SongMakerGroup/>}></Route>
   </Routes>
 </BrowserRouter>
   // <React.StrictMode>
