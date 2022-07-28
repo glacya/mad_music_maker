@@ -54,24 +54,24 @@ const SongMakerGroup=()=>{
     }
 
     //get 받기
-    axios.get(`/api/temporary/${userId}`
-    , {
-        headers: {"Content-Type": 'application/json'},
-    }).then((res)=>{
-        console.log("RES")
-        console.log(res)
-        const jsonGet=res.data.value;
-        const instrumentGet=res.data.instrm;
-        setJsonStringArr(jsonStringArr.concat(
-            {instrument: instrumentGet,
-            jsonStr: jsonGet}));
-        localStorage.setItem(userId, JSON.stringify(jsonStringArr.concat(
-            {instrument: instrumentGet,
-            jsonStr: jsonGet})));
-        console.log("JsonStringARr!!!",jsonStringArr); //한 번 늦게 업데이트 됨
-        // setInstrument(instrument?.concat(instrumentGet));
-        // console.log("instrumentArr!!!", instrument);
-    });
+    // axios.get(`/api/temporary/${userId}`
+    // , {
+    //     headers: {"Content-Type": 'application/json'},
+    // }).then((res)=>{
+    //     console.log("RES")
+    //     console.log(res)
+    //     const jsonGet=res.data.value;
+    //     const instrumentGet=res.data.instrm;
+    //     setJsonStringArr(jsonStringArr.concat(
+    //         {instrument: instrumentGet,
+    //         jsonStr: jsonGet}));
+    //     localStorage.setItem(userId, JSON.stringify(jsonStringArr.concat(
+    //         {instrument: instrumentGet,
+    //         jsonStr: jsonGet})));
+    //     console.log("JsonStringARr!!!",jsonStringArr); //한 번 늦게 업데이트 됨
+    //     // setInstrument(instrument?.concat(instrumentGet));
+    //     // console.log("instrumentArr!!!", instrument);
+    // });
     
     useEffect(()=>{
         setLocal(JSON.parse(localStorage.getItem(userId)));
