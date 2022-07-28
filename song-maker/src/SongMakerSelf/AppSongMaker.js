@@ -30,9 +30,9 @@ const AppSongMaker =()=>{
 
 
     return(
-    <div >
+    <div className='entire'>
       <div className='noteAndAdd'>
-      <form >
+      <form className='total'>
         <div className='inputs'>
         <img src={musicImg} 
         width="30"

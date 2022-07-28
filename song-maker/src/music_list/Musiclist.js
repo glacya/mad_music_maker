@@ -1,7 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState} from 'react';
+import musicImg from '../SongMakerSelf/img/music.png'
+import musicImg1 from '../SongMakerSelf/img/playgif.gif'
+import {useNavigate} from 'react-router-dom';
 
 const MusicList = () => {
+    let navigate=useNavigate();
     // TODO: use user ID here.
     const id = localStorage.getItem("id");
     const [songs, setSongs] = useState([]);
@@ -15,9 +19,26 @@ const MusicList = () => {
             });
         }
     }, [id]);
+    
+
+    const sendPost=(e)=>{
+        e.preventDefault();
+
+        navigate('/');
+    }
 
     return (
         <div>
+            <div className='inputs'>
+            <input className='send-post2' type="button" onClick={sendPost}/>
+                <img src={musicImg} 
+                width="30"
+                height="30" 
+                alt="music"
+                className='AppSongMakerSrc'/>
+                <div className='header'>Music Maker</div>
+                
+            </div>
             {songs.map(song => {
                 return <MusicElement music_id={song.music_id} music_name={song.music_name}/>
             })}
@@ -29,8 +50,12 @@ const MusicElement = (props) => {
     // TODO: care design here
     return (
         <div>
-            <h3>{props.music_id}  {props.music_name}</h3>
-            <a href={`http://192.249.18.201:443/api/audio/${props.music_id}.wav`} download>Link</a>
+            
+            <div className='textPlay'>
+            <h3>{props.music_id}. {props.music_name} : </h3>{/*{props.music_id}.*/}
+            
+            <a className='playLink' href={`http://192.249.18.201:443/api/audio/${props.music_id}.wav`} download>play</a>
+        </div>
         </div>
     )
 }

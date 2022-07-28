@@ -18,10 +18,7 @@ const Piano = (props) => {
     const rhythm=props.rhythm; //두 번 전달 거침
     const navigate = useNavigate();
 
-    // var noteName=['C4', '', 'D4', '', 'E4', 'F4', '', 'G4', '', 'A4', '', 'B4',
-    //     'C5', '', 'D5', '', 'E5', 'F5', '', 'G5', '', 'A5', '', 'B5',
-    //     'C6']
-    var noteName = ['C6', 'B5', 'A#5', 'A5', 'G#5', 'G5', 'F#5', 'F5', 'E5', 'D#5', 'D5', 'C#5', 'C5', 'B4', 'A#4', 'A4', 'G#4', 'G4', 'F#4', 'F4', 'E4', 'D#4', 'D4', 'C#4', 'C4']
+    var noteName=['C6', 'B5', 'A#5', 'A5', 'G#5', 'G5', 'F#5', 'F5', 'E5', 'D#5', 'D5', 'C#5', 'C5', 'B4', 'A#4', 'A4', 'G#4', 'G4', 'F#4', 'F4', 'E4', 'D#4', 'D4', 'C#4', 'C4'];
 
     const [json,setJson] = useState(JSON.parse(JSON.stringify({
         "tempo": 130,
@@ -95,7 +92,7 @@ const Piano = (props) => {
         
         //noteTag 배열에 추가
         setId(prevnum=>prevnum+1);
-        const note=(<Note id={id} color={colors[parseInt(y)%12]} width={`${20 * length}px`} marginLeft={`${x * 20+0.5}px`} marginTop={`${(24 - y) * 12+0.5}px`}/>)
+        const note=(<Note  id={id} noteName={noteName[24-parseInt(y)]} color={colors[parseInt(y)%12]} width={`${20 * length}px`} marginLeft={`${x * 20+0.5}px`} marginTop={`${(24 - y) * 12+0.5}px`}/>)
         setNoteTag(noteTag.concat(note))
         
 
@@ -145,14 +142,7 @@ const Piano = (props) => {
 
         const startAscending=sortArray(notes);
         
-        // console.log("TotalLength:!! real!!! ",total_length);
-        // console.log(tempo);
-        // console.log(total_length);
-        // console.log(number_of_notes);
-        // console.log(rhythm);
-        // console.log(notes);
-
-        // console.log("startAscending!!!", startAscending);
+        
 
         axios.post("/api/audio_playtest",JSON.stringify({
             tempo: tempo,
@@ -236,25 +226,18 @@ const Piano = (props) => {
             })
 
             }</div> */}
-            <div className='noteNames' style={div_style}>
-                {
-                    noteName.map(name => {
-                        return (<div style={font_style}>{name}<br/></div>)
-                    })
-                }
-            </div>
-            <div id="grid" className="grid" style={style} onClick={onClick}>
-                {noteTag.map(note=>{
-                    return <div key={key++} onClick={(event)=>{removeNotes(note.props.id); event.stopPropagation()}}>{note}</div>
-                }
-                )}
-            </div>
-            <div className='musicBtn'>
-                <input className='send-post' type="button" onClick={sendPost}/>
-                <input className='music-add' type="button" onClick={addMusic}/>
-                <input className='img-button' type="button" onClick={playMusic}/>
-            
-            </div>
+        <div id="grid" className="grid" style={style} onClick={onClick}>
+            {noteTag.map(note=>{
+                return <div key={key++} onClick={(event)=>{removeNotes(note.props.id); event.stopPropagation()}}>{note}</div>
+            }
+            )}
+        </div>
+        <div className='musicBtn'>
+            <input className='send-post' type="button" onClick={sendPost}/>
+        <input className='music-add' type="button" onClick={addMusic}/>
+        {/* <input className='img-button' type="button" onClick={playMusic}/> */}
+        
+        </div>
         </div>
         <Sheet json = {json}/>
         </div>
@@ -270,11 +253,12 @@ const Note = (props) => {
         marginTop: props.marginTop,
         display: 'inline-block',
         position: 'absolute',
-        border: '1px solid black'
-    };
+        border: '1px solid black',
+        fontSize: '5px',
+            };
 
     return (
-        <div key={++key} style={style}></div>
+        <div key={++key} style={style}>{props.noteName}</div>
     )
 }
 

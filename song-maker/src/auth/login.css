@@ -12,20 +12,54 @@ body{
     top:50%;
     margin-left:-150px;
     margin-top:-150px;
-    background-color: brown;
+    /* background-color: brown; */
 }
 .head_box{
 
     display: block;
-    color: yellow;
-    background-color: black;
+    text-align: center;
+    font-style: italic;
+    /* color: yellow; */
+    /* background-color: black; */
     margin: 30px;
 }
 .id_box{
-    color: blue;
-    background-color: purple;
+    /* color: blue;
+    background-color: purple; */
 }
 .pw_box{
-    color:pink;
-    background-color: aqua;
+    /* color:pink;
+    background-color: aqua; */
+}
+
+.imgParent{
+    text-align: center;
+}
+.inputS{
+    text-align: center;
+}
+.inputS input{
+margin-bottom:30px;
+margin-left: 10px;
+
+width: 150px;
+height:25px;
+border:0;
+border-color: whitesmoke;
+border-radius: 20%;
+background-color:whitesmoke;
+outline-color: whitesmoke;
+}
+
+.inputS button{
+    margin-left:10px;
+    margin-top:10px;
+}
+.inputs{
+    /* text-align: center; */
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 30px;
+
 }
