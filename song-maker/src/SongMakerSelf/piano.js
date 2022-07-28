@@ -144,14 +144,7 @@ const Piano = (props) => {
 
         const startAscending=sortArray(notes);
         
-        // console.log("TotalLength:!! real!!! ",total_length);
-        // console.log(tempo);
-        // console.log(total_length);
-        // console.log(number_of_notes);
-        // console.log(rhythm);
-        // console.log(notes);
-
-        // console.log("startAscending!!!", startAscending);
+        
 
         axios.post("/api/audio_playtest",JSON.stringify({
             tempo: tempo,
@@ -233,7 +226,7 @@ const Piano = (props) => {
         <div className='musicBtn'>
             <input className='send-post' type="button" onClick={sendPost}/>
         <input className='music-add' type="button" onClick={addMusic}/>
-        <input className='img-button' type="button" onClick={playMusic}/>
+        {/* <input className='img-button' type="button" onClick={playMusic}/> */}
         
         </div>
         </div>

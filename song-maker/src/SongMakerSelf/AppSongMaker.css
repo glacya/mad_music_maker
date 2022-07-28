@@ -171,5 +171,12 @@ h5{
   cursor: pointer;
 }
 .playLink{
-  /* margin-bottom: 10px; */
+  margin-left:10px;
+  margin-top: 21px;
+  color:black;
+}
+
+.textPlay{
+  display: flex;
+  margin-top:-20px;
 }
