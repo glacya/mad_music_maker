@@ -19,6 +19,7 @@ const SongMakerGroup=()=>{
     const userId = localStorage.getItem("id");
     const [inputValue,setInputValue]=useState(1)
     const [inputTempo, setInputTempo]=useState(120)
+    const [inputName, setInputName]=useState("")
     const [Selected, setSelected]=useState('sine');
     const [Selected2, setSelected2]=useState('4/4');
 
@@ -29,6 +30,12 @@ const SongMakerGroup=()=>{
 
     const [total_length, setTotalLength] = useState(0);
     const [notes, setNotes] = useState([]);
+
+    const [showPopup, setShowPopup]=useState(false);
+    
+    const togglePopup=(event)=>{
+      setShowPopup(event.target.value);
+    }
 
     // const [inputNoteType, setInputNoteType]=useState()
     const handleSelect=(e)=>{
@@ -142,11 +149,12 @@ const SongMakerGroup=()=>{
 
     const audioUpload = (event) => {
       event.preventDefault();
+
       console.log(notes);
 
       const playtestJson = {
         author_id: userId,
-        music_name: 'happy',
+        music_name: inputName,
         tempo: inputTempo,
         total_length: total_length,
         number_of_notes: notes.length,
@@ -162,6 +170,18 @@ const SongMakerGroup=()=>{
         console.log(res.data)
       }
       )
+
+      //제목 설정 팝업창 띄우기
+      // return(
+      //   <div>
+      //   <h1>fix me to open popup</h1>
+      //   <button onClick={togglePopup} value='false'>Open me</button>
+      //   {showPopup?(
+      //     <div>Success!!</div>
+      //   ):null
+      //   }
+      //   </div>
+      // );
     };
     
     const myPage=(event)=>{
@@ -188,10 +208,13 @@ const SongMakerGroup=()=>{
           <input className="inputInfo" type="number" onChange={(e)=>setInputValue(e.target.valueAsNumber)}></input>
           </div> */}
           <div className='inputNT'>
+          <h5>Name: </h5>
+          <input className="inputInfo" type="text" onChange={(e)=>setInputName(e.target.value)}></input>
+          </div>
+          <div className='inputNT'>
           <h5>Tempo: </h5>
           <input className="inputInfo" type="number" onChange={(e)=>setInputTempo(e.target.valueAsNumber)}></input>
           </div>
-          
           </div>
 
 
