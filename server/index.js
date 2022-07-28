@@ -136,7 +136,9 @@ app.post('/api/audio_playtest', (req, res) => {
         else {
             // await exec("cd ../audio");
             process.chdir('../audio');
+            console.log(`cargo run playtest${playtest_id}!!`);
             const {stdout, stderr} = await exec(`cargo run playtest${playtest_id}`);
+            console.log(stderr);
             if (stdout === "Success") {
                 res.header({
                     "Content-Type": "audio/wav"
@@ -150,6 +152,7 @@ app.post('/api/audio_playtest', (req, res) => {
                         playtest_id += 1;
                     }
                 });
+                console.log("Hmm... End?");
             }
             else {
                 console.log(`Something went wrong while creating audio file from playtest${playtest_id}.json.`);
@@ -201,45 +204,45 @@ app.post('/api/audio_upload', (req, res) => {
                         process.chdir("../server");
                     }
                 });
-    
+                console.log("Yeah");
                 
             }
         });
     }
 });
 
-var temporary_map = new Map();
+// var temporary_map = new Map();
 
 // Store temporary data.
-app.post('/api/temporary', (req, res) => {
-    const id = req.body.id;
-    debug(`POST /temporary`);
-    console.log(JSON.stringify(req.body));
-    if (id === undefined) {
-        res.status(400).send("You must include id.");
-    }
-    else {
-        res.status(200).send("Saved temporary data.");
-        temporary_map.set(id, JSON.stringify(req.body));
-    }
-});
+// app.post('/api/temporary', (req, res) => {
+//     const id = req.body.id;
+//     debug(`POST /temporary`);
+//     console.log(JSON.stringify(req.body));
+//     if (id === undefined) {
+//         res.status(400).send("You must include id.");
+//     }
+//     else {
+//         res.status(200).send("Saved temporary data.");
+//         temporary_map.set(id, JSON.stringify(req.body));
+//     }
+// });
 
-app.get('/api/temporary/:id', (req, res) => {
-    const id = req.params.id;
-    debug(`GET /temporary/${id}`);
-    if (id === undefined) {
-        res.status(400).send("Undefined ID is not allowed");
-    }
-    else {
-        const temp_data = temporary_map.get(id);
-        if (temp_data === undefined) {
-            res.status(400).send("Server does not have temporary data for this id.");
-        }
-        else {
-            res.header({"Content-Type": "application/json"}).status(200).send(temp_data);
-        }
-    }
-});
+// app.get('/api/temporary/:id', (req, res) => {
+//     const id = req.params.id;
+//     debug(`GET /temporary/${id}`);
+//     if (id === undefined) {
+//         res.status(400).send("Undefined ID is not allowed");
+//     }
+//     else {
+//         const temp_data = temporary_map.get(id);
+//         if (temp_data === undefined) {
+//             res.status(400).send("Server does not have temporary data for this id.");
+//         }
+//         else {
+//             res.header({"Content-Type": "application/json"}).status(200).send(temp_data);
+//         }
+//     }
+// });
 
 app.get('/api/audio_list/:id', (req, res) => {
     const id = req.params.id;

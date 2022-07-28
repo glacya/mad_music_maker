@@ -1,0 +1,31 @@
+body{
+    width: 300px;
+    margin: 0 auto;
+
+}
+
+.entire_box{
+    width:300px;
+    height:300px;
+    position:absolute;
+    left:50%;
+    top:50%;
+    margin-left:-150px;
+    margin-top:-150px;
+    background-color: brown;
+}
+.head_box{
+
+    display: block;
+    color: yellow;
+    background-color: black;
+    margin: 30px;
+}
+.id_box{
+    color: blue;
+    background-color: purple;
+}
+.pw_box{
+    color:pink;
+    background-color: aqua;
+}

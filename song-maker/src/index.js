@@ -7,6 +7,8 @@ import AppSongMaker from './SongMakerSelf/AppSongMaker';
 import SongMakerGroup from './SongMakerGroup/SongMakerGroup';
 import Entrance from './entrance/Entrance';
 import MusicList from './music_list/Musiclist';
+import Login from './auth/login';
+import Register from './auth/register';
 
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import SongMakerSelf from './SongMakerSelf/SongMakerSelf';
@@ -15,13 +17,14 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
   <Routes>
-    <Route exact path="/" element={<SongMakerGroup />}></Route>
+    <Route exact path="/" element={<Entrance />}></Route>
     <Route exact path="/music_maker" element={<AppSongMaker/>}></Route>
     <Route exact path='/song_maker_group' element={<SongMakerGroup/>}></Route>
+    <Route exact path='/music_list' element={<MusicList/>}></Route>
+    <Route exact path="/login" element={<Login/>}></Route>
+    <Route exact path="/register" element={<Register/>}></Route>
     {/* <Route path='/songMaker' render={()=><SongMakerSelf />}/> */}
-    <Route path="/entrance" element={<Entrance />}></Route>
-    <Route path="/music_list" element={<MusicList />}></Route>
-    <Route path="/song_maker_group" element={<SongMakerGroup/>}></Route>
+=
   </Routes>
 </BrowserRouter>
   // <React.StrictMode>

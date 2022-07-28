@@ -4,9 +4,9 @@ import "./styles.css";
 import SheetMusic from "@slnsw/react-sheet-music";
 
 export default function Sheet(props) {
-  console.log("################# sheet.js #####################")
+  // console.log("################# sheet.js #####################")
 
-  console.log(props.json)
+  // console.log(props.json)
   
   
   //console.log(props.json.rhythm)
@@ -17,11 +17,11 @@ export default function Sheet(props) {
   
   const [isPlaying, setPlaying] = useState(false);
   
-  console.log("########## SHEET value: " + value);
+  // console.log("########## SHEET value: " + value);
 
   useEffect(()=>{
-    console.log("############################## USE EFFECT ###############################");
-    console.log(props.json)
+    // console.log("############################## USE EFFECT ###############################");
+    // console.log(props.json)
     setValue(show_sheet(props.json))
   },[props])
   

@@ -1,7 +1,19 @@
-import { Link } from 'react-router-dom';
-import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
 
 const Entrance = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const id = localStorage.getItem("id");
+        if (id === null) {
+            navigate('./login');
+        }
+        else {
+            localStorage.removeItem(id);
+        }
+    });
+
     return (
         <div>
                 <Link to="/song_maker_group">

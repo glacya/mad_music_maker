@@ -4,17 +4,19 @@ import { start } from 'tone';
 import './grid.css';
 import Sheet from '../score/sheet'
 import {show_sheet} from '../score/parse'
+import { useNavigate } from 'react-router';
 
 var key = 0;
 
 
 const Piano = (props) => {
-    const userId="jina"; //userId 하드코딩 바꾸기!!********
+    const userId = localStorage.getItem("id");
     const [column, setColumn]=useState(32);
     const length=props.noteLength;
     const tempo=props.tempo;
     const note_type=props.note_type; //두 번 전달 거침
     const rhythm=props.rhythm; //두 번 전달 거침
+    const navigate = useNavigate();
 
     // var noteName=['C4', '', 'D4', '', 'E4', 'F4', '', 'G4', '', 'A4', '', 'B4',
     //     'C5', '', 'D5', '', 'E5', 'F5', '', 'G5', '', 'A5', '', 'B5',
@@ -22,7 +24,7 @@ const Piano = (props) => {
 
     const [json,setJson] = useState(JSON.parse(JSON.stringify({
         "tempo": 130,
-        "length": 20,
+        "total_length": 20,
         "number_of_notes": 4,
         "rhythm" : "4/4",
         "notes": []
@@ -61,18 +63,18 @@ const Piano = (props) => {
     
 
     const sortArray=(notes)=>{
-        console.log("$$$$$$$$$$$$$$$$$$$$$$$$$")
-        console.log("node num:",number_of_notes)
-        console.log("notes in sortArray: ",notes);
+        // console.log("$$$$$$$$$$$$$$$$$$$$$$$$$")
+        // console.log("node num:",number_of_notes)
+        // console.log("notes in sortArray: ",notes);
         //notes 배열 정렬
         const startAscending=[...notes].sort((a,b)=>a.start-b.start);
-        console.log("startAscending:  ",startAscending); ///확인하기!!!!!//pitch까지는 구현 못함...
+        // console.log("startAscending:  ",startAscending); ///확인하기!!!!!//pitch까지는 구현 못함...
         // setNotes(startAscending);
         //total_length
         // console.log("total_length!!!: ",startAscending[number_of_notes-1].start+startAscending[number_of_notes-1].length);
         // total_length=startAscending[number_of_notes-1].start+startAscending[number_of_notes-1].length-1-startAscending[0].start+1;
         // setTotalLength(startAscending[number_of_notes-1].start+startAscending[number_of_notes-1].length-1-startAscending[0].start+1);
-        console.log("TotalLength: sortArray : ",total_length);
+        // console.log("TotalLength: sortArray : ",total_length);
 
         return startAscending
     }
@@ -86,7 +88,7 @@ const Piano = (props) => {
     const onClick = (event) => {
         const x = Math.floor((event.nativeEvent.offsetX) / 20)
         const y = 24 - Math.floor((event.nativeEvent.offsetY) / 12)
-        console.log(`${x}, ${y}`)
+        // console.log(`${x}, ${y}`)
 
         
         
@@ -107,13 +109,13 @@ const Piano = (props) => {
         };
         setNotes(notes.concat(notee));
         
-        console.log("notes!!!!!!정렬 전!!", notes);
+        // console.log("notes!!!!!!정렬 전!!", notes);
 
         const Array=sortArray(notes.concat(notee)); //회준오빠 : Array 사용하기!!!!
         
 
-        console.log("정렬 후!!!", notes);
-        console.log("Array!!!",Array);
+        // console.log("정렬 후!!!", notes);
+        // console.log("Array!!!",Array);
 
         setJson((json)=>{
             return {...json, notes: Array}
@@ -142,14 +144,14 @@ const Piano = (props) => {
 
         const startAscending=sortArray(notes);
         
-        console.log("TotalLength:!! real!!! ",total_length);
-        console.log(tempo);
-        console.log(total_length);
-        console.log(number_of_notes);
-        console.log(rhythm);
-        console.log(notes);
+        // console.log("TotalLength:!! real!!! ",total_length);
+        // console.log(tempo);
+        // console.log(total_length);
+        // console.log(number_of_notes);
+        // console.log(rhythm);
+        // console.log(notes);
 
-        console.log("startAscending!!!", startAscending);
+        // console.log("startAscending!!!", startAscending);
 
         axios.post("/api/audio_playtest",JSON.stringify({
             tempo: tempo,
@@ -161,8 +163,10 @@ const Piano = (props) => {
         , {
             headers: {"Content-Type": 'application/json'},
         }).then((res)=>{
-            console.log("RES")
-            console.log(res)
+            // console.log("RES")
+            // console.log(res)
+
+            // TODO: download here.
 
             // console.log(res.data);
         })
@@ -177,21 +181,38 @@ const Piano = (props) => {
     }
 
     const sendPost=(e)=>{
-        e.preventDefault();
+        // e.preventDefault();
 
-        axios.post("/api/temporary",JSON.parse(JSON.stringify({
-            id: userId,
-            instrm: note_type,
-            value: show_sheet(json)
-        }))
-        , {
-            headers: {"Content-Type": 'application/json'},
-        }).then((res)=>{
-            console.log("RES")
-            console.log(res)
+        // axios.post("/api/temporary",JSON.parse(JSON.stringify({
+        //     id: userId,
+        //     instrm: note_type,
+        //     value: show_sheet(json)
+        // }))
+        // , {
+        //     headers: {"Content-Type": 'application/json'},
+        // }).then((res)=>{
+        //     console.log("RES")
+        //     console.log(res)
 
-            // console.log(res.data);
-        })
+        //     // console.log(res.data);
+        // })
+        
+        let previousItem = localStorage.getItem(userId);
+        previousItem = previousItem === null ? [] : JSON.parse(previousItem);
+        
+        // console.log(userId);
+
+        localStorage.setItem(userId, JSON.stringify(previousItem.concat({
+            instrument: note_type,
+            tempo: tempo,
+            total_length: total_length,
+            number_of_notes: number_of_notes,
+            rhythm: rhythm,
+            notes: sortArray(notes)}
+        )));
+
+        // Navigate back to song_maker_group.
+        navigate('/song_maker_group');
     }
 
     return (

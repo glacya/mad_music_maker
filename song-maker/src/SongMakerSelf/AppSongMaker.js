@@ -4,6 +4,9 @@ import SongMakerSelf from './SongMakerSelf';
 import musicImg from './img/music.png'
 
 import Piano from './piano';
+
+var piano_id = 0;
+
 const AppSongMaker =()=>{
     const [inputValue,setInputValue]=useState(1)
     const [inputTempo, setInputTempo]=useState(120)
@@ -47,14 +50,17 @@ const AppSongMaker =()=>{
           <h5>Tempo: </h5>
           <input className="inputInfo" type="number" onChange={(e)=>setInputTempo(e.target.valueAsNumber)}></input>
           </div> */}
-          <h5 for="noteType">Note type:</h5>
+          <h5>Note type:</h5>
           
           <select name="noteType" id="noteTypes" onChange={handleSelect} value={Selected}>
-            <option value="sin" selected>sin</option>
+            <option value="sine" defaultValue>sine</option>
             <option value="square">square</option>
             <option value="triangle">triangle</option>
             <option value="saw">saw</option>
             <option value="synth1">synth1</option>
+            <option value="synth2">synth2</option>
+            <option value="kick">kick</option>
+            <option value="snare">snare</option>
           </select>
           </div>
 
@@ -88,7 +94,7 @@ const AppSongMaker =()=>{
           <p>NoteType Selected: {Selected}</p>
           <p>NoteType Selected: {Selected2}</p> */}
         {/* <SongMakerSelf column={50} noteLength={inputValue} tempo={inputTempo} note_type={Selected} rhythm={Selected2}/> */}
-        <Piano noteLength={inputValue} tempo={inputTempo} note_type={Selected} rhythm={Selected2}/>
+        <Piano id={piano_id++} noteLength={inputValue} tempo={inputTempo} note_type={Selected} rhythm={Selected2}/>
       </form>
       
       </div>

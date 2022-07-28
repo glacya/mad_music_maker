@@ -3,7 +3,7 @@ import React, { useEffect, useState} from 'react';
 
 const MusicList = () => {
     // TODO: use user ID here.
-    const id = localStorage.get("id");
+    const id = localStorage.getItem("id");
     const [songs, setSongs] = useState([]);
 
     useEffect(() => {
