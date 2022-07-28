@@ -3,7 +3,7 @@ import React, { useEffect, useState} from 'react';
 
 const MusicList = () => {
     // TODO: use user ID here.
-    const id = localStorage.get("user_id");
+    const id = localStorage.get("id");
     const [songs, setSongs] = useState([]);
 
     useEffect(() => {
@@ -14,7 +14,7 @@ const MusicList = () => {
                 setSongs(res.data);
             });
         }
-    }, [])
+    }, [id]);
 
     return (
         <div>
