@@ -234,7 +234,7 @@ const Piano = (props) => {
         </div>
         <div className='musicBtn'>
             <input className='send-post' type="button" onClick={sendPost}/>
-        <input className='music-add' type="button" onClick={addMusic}/>
+            <input className='music-add' type="button" onClick={addMusic}/>
         {/* <input className='img-button' type="button" onClick={playMusic}/> */}
         
         </div>
