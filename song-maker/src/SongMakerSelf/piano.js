@@ -21,6 +21,7 @@ const Piano = (props) => {
     // var noteName=['C4', '', 'D4', '', 'E4', 'F4', '', 'G4', '', 'A4', '', 'B4',
     //     'C5', '', 'D5', '', 'E5', 'F5', '', 'G5', '', 'A5', '', 'B5',
     //     'C6']
+    var noteName = ['C6', 'B5', 'A#5', 'A5', 'G#5', 'G5', 'F#5', 'F5', 'E5', 'D#5', 'D5', 'C#5', 'C5', 'B4', 'A#4', 'A4', 'G#4', 'G4', 'F#4', 'F4', 'E4', 'D#4', 'D4', 'C#4', 'C4']
 
     const [json,setJson] = useState(JSON.parse(JSON.stringify({
         "tempo": 130,
@@ -215,27 +216,45 @@ const Piano = (props) => {
         navigate('/song_maker_group');
     }
 
+    const font_style = {
+        fontSize: '7px',
+        position: 'relative'
+    };
+
+    const div_style = {
+        display: 'inline-block',
+        position: 'relative'
+    }
+
     return (
-        <div>
-        <div className='gridAndBtn'>
+        <div style={{"float":"left"}}>
+            
+        <div className='gridAndBtn' style={div_style}>
             {/* <div className='noteName'>
             {noteName.map(note=>{
                 return (<p className='singleNoteName'>{note}</p> )
             })
 
             }</div> */}
-        <div id="grid" className="grid" style={style} onClick={onClick}>
-            {noteTag.map(note=>{
-                return <div key={key++} onClick={(event)=>{removeNotes(note.props.id); event.stopPropagation()}}>{note}</div>
-            }
-            )}
-        </div>
-        <div className='musicBtn'>
-            <input className='send-post' type="button" onClick={sendPost}/>
-        <input className='music-add' type="button" onClick={addMusic}/>
-        <input className='img-button' type="button" onClick={playMusic}/>
-        
-        </div>
+            <div className='noteNames' style={div_style}>
+                {
+                    noteName.map(name => {
+                        return (<div style={font_style}>{name}<br/></div>)
+                    })
+                }
+            </div>
+            <div id="grid" className="grid" style={style} onClick={onClick}>
+                {noteTag.map(note=>{
+                    return <div key={key++} onClick={(event)=>{removeNotes(note.props.id); event.stopPropagation()}}>{note}</div>
+                }
+                )}
+            </div>
+            <div className='musicBtn'>
+                <input className='send-post' type="button" onClick={sendPost}/>
+                <input className='music-add' type="button" onClick={addMusic}/>
+                <input className='img-button' type="button" onClick={playMusic}/>
+            
+            </div>
         </div>
         <Sheet json = {json}/>
         </div>
