@@ -38,6 +38,7 @@ function Register() {
         
         <div className="entire_box">
             <div className="head_box">Register</div>
+            <div className='inputS'>
             <div className="id_box">
                 <label htmlFor='input_id'>ID : </label>
                 <input type='text' name='input_id' value={inputId} onChange={handleInputId} />
@@ -46,10 +47,10 @@ function Register() {
                 <label htmlFor='input_pw'>PW : </label>
                 <input type='password' name='input_pw' value={inputPw} onChange={handleInputPw} />
             </div>
-            <div>
-            <button type='button' onClick={onClickSign}>Sign</button>
             </div>
-            <div>
+            <div className='inputS'>
+            <button type='button' onClick={onClickSign}>Sign</button>
+            
             <button type='button' onClick={onClick_toLogin}>Go to Login</button>
             </div>
         </div>

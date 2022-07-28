@@ -163,9 +163,15 @@ const SongMakerGroup=()=>{
       }
       )
     };
+    
+    const myPage=(event)=>{
+        event.preventDefault();
+
+        navigate('/music_list');
+    }
 
     return (
-        <div >
+        <div className='entire'>
       <div className='noteAndAdd'>
         <form >
         <div className='inputs'>
@@ -202,6 +208,7 @@ const SongMakerGroup=()=>{
           <button onClick={audioUpload}>Upload</button> */}
           <input type="submit" value="PlayTest" onClick={audioPlayTest}></input>
           <input type="submit" value="Upload" onClick={audioUpload}></input>
+          <input type="submit" value="my page" onClick={myPage}></input>
           </div>
           </div>
           

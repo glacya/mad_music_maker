@@ -80,8 +80,8 @@
 } */
 .noteAndAdd{
   display: flex;
-  margin-left: 30px;
-  margin-right: 30px;
+  /* margin-left: 30px;
+  margin-right: 30px; */
 }
 /* .addNoteBtn{
   height: 301px;
@@ -134,7 +134,7 @@ h5{
   
 }
 .rowrow{
-  margin-top: 50px;
+  
   text-align: center;
 }
 .inputInfo{
@@ -152,3 +152,24 @@ h5{
 /* .showNoteType{
 
 } */
+
+.entire{
+  margin-left:-200px;
+}
+/* .total{
+  float:left;
+} */
+
+.playImg{
+  background: url("img/plusing.png") no-repeat;
+  border: none;
+  width: 35px;
+  height: 35px;
+  background-size: cover;
+
+  /* object-fit: cover; */
+  cursor: pointer;
+}
+.playLink{
+  /* margin-bottom: 10px; */
+}

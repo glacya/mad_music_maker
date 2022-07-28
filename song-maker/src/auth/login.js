@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "./login.css";
 import {useNavigate} from 'react-router-dom'
- 
+import musicImg from '../SongMakerSelf/img/login.png'
+import musicImg1 from '../SongMakerSelf/img/music.png'
+
 function Login() {
     let navigate=useNavigate();
     const [inputId, setInputId] = useState('')
@@ -44,7 +46,23 @@ function Login() {
     return(
         
         <div className="entire_box">
-            <div className="head_box">Login</div>
+            <div className='inputs'>
+                <img src={musicImg1} 
+                width="30"
+                height="30" 
+                alt="music"
+                className='AppSongMakerSrc'/>
+                <div className='header'>Music Maker</div>
+            </div>
+            {/* <div className='imgParent'>
+            <img src={musicImg} 
+            width="80"
+            height="80" 
+            alt="music"
+            className='imgimg'/>
+            </div> */}
+            {/* <div className="head_box">Login</div> */}
+            <div className='inputS'>
             <div className="id_box">
                 <label htmlFor='input_id'>ID : </label>
                 <input type='text' name='input_id' value={inputId} onChange={handleInputId} />
@@ -53,8 +71,12 @@ function Login() {
                 <label htmlFor='input_pw'>PW : </label>
                 <input type='password' name='input_pw' value={inputPw} onChange={handleInputPw} />
             </div>
-            <div>
-                <button type='button' onClick={onClickLogin}>Login</button>
+            </div>
+            <div className='inputS'>
+                <button type='button' onClick={onClickLogin}>
+                    Login
+                    {/* <img src='../SongMakerSelf/img/login.png'></img> */}
+                </button>
                 <button type='button' onClick={onClickRegister}>Register</button>
 
             </div>
