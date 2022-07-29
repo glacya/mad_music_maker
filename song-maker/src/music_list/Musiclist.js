@@ -48,13 +48,13 @@ const MusicList = () => {
 
 const MusicElement = (props) => {
     // TODO: care design here
+    const name = props.music_name == "" ? "Unnamed": props.music_name;
     return (
         <div>
-            
             <div className='textPlay'>
-            <h3>{props.music_id}. {props.music_name} : </h3>{/*{props.music_id}.*/}
+            <h3>{name} : </h3>{/*{props.music_id}.*/}
             
-            <a className='playLink' href={`http://192.249.18.201:443/api/audio/${props.music_id}.wav`} download>play</a>
+            <a className='playLink' href={`http://192.249.18.201:443/api/audio/${props.music_id}.wav`} download>Download</a>
         </div>
         </div>
     )

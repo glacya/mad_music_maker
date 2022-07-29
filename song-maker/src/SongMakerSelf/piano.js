@@ -52,7 +52,7 @@ const Piano = (props) => {
 
     const style = {
         width: `${20*column+1}px`,
-        height: '301px',
+        height: '401px',
         margin: '10px 10px 10px 10px',
         position: 'relative',
         
@@ -85,14 +85,14 @@ const Piano = (props) => {
 
     const onClick = (event) => {
         const x = Math.floor((event.nativeEvent.offsetX) / 20)
-        const y = 24 - Math.floor((event.nativeEvent.offsetY) / 12)
+        const y = 24 - Math.floor((event.nativeEvent.offsetY) / 16)
         // console.log(`${x}, ${y}`)
 
         
         
         //noteTag 배열에 추가
         setId(prevnum=>prevnum+1);
-        const note=(<Note  id={id} noteName={noteName[24-parseInt(y)]} color={colors[parseInt(y)%12]} width={`${20 * length}px`} marginLeft={`${x * 20+0.5}px`} marginTop={`${(24 - y) * 12+0.5}px`}/>)
+        const note=(<Note  id={id} noteName={noteName[24-parseInt(y)]} color={colors[parseInt(y)%12]} width={`${20 * length}px`} marginLeft={`${x * 20+0.5}px`} marginTop={`${(24 - y) * 16+0.5}px`}/>)
         setNoteTag(noteTag.concat(note))
         
 
@@ -206,8 +206,19 @@ const Piano = (props) => {
         navigate('/song_maker_group');
     }
 
+    const font_style = {
+        fontSize: '7px',
+        position: 'relative'
+    };
+
+    const div_style = {
+        display: 'inline-block',
+        position: 'relative'
+    }
+
     return (
         <div>
+            
         <div className='gridAndBtn'>
             {/* <div className='noteName'>
             {noteName.map(note=>{
@@ -236,7 +247,7 @@ const Piano = (props) => {
 const Note = (props) => {
     const style = {
         width: props.width,
-        height: '12px',
+        height: '16px',
         backgroundColor: props.color,
         marginLeft: props.marginLeft,
         marginTop: props.marginTop,

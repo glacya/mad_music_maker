@@ -138,20 +138,21 @@ app.post('/api/audio_playtest', (req, res) => {
             process.chdir('../audio');
             console.log(`cargo run playtest${playtest_id}!!`);
             const {stdout, stderr} = await exec(`cargo run playtest${playtest_id}`);
-            console.log(stderr);
             if (stdout === "Success") {
-                res.header({
-                    "Content-Type": "audio/wav"
-                }).sendFile(path.join(__dirname, `../audio/wavs/playtest${playtest_id}.wav`), (error) => {
-                    if (error) {
-                        console.log(`Sending file playtest${playtest_id}.wav failed.`);
-                        console.log(error);
-                    }
-                    else {
-                        console.log(`Sending file playtest${playtest_id}.wav succeeded.`);
-                        playtest_id += 1;
-                    }
-                });
+                res.status(200).send(`playtest${playtest_id}.wav`);
+                // res.header({
+                //     "Content-Type": "audio/wav"
+                // }).sendFile(path.join(__dirname, `../audio/wavs/playtest${playtest_id}.wav`), (error) => {
+                //     if (error) {
+                //         console.log(stderr);
+                //         console.log(`Sending file playtest${playtest_id}.wav failed.`);
+                //         console.log(error);
+                //     }
+                //     else {
+                //         console.log(`Sending file playtest${playtest_id}.wav succeeded.`);
+                //         playtest_id += 1;
+                //     }
+                // });
                 console.log("Hmm... End?");
             }
             else {
@@ -190,16 +191,18 @@ app.post('/api/audio_upload', (req, res) => {
                         fs.unlink(path.join(__dirname, `../audio/jsons/${upload_id}.json`));
                     }
                     else {
-                        upload_id += 1;
                         console.log(`Success.`);
-                        res.status(200).send("Upload success.");
                         process.chdir('../audio');
-                        const {stdout, _} = await exec(`cargo run ${upload_id}`);
+                        const {stdout, stderr} = await exec(`cargo run ${upload_id}`);
                         if (stdout === "Success") {
                             console.log("Ok, created wav file on storage.");
+                            upload_id += 1;
+                            res.status(200).send("Upload success.");
                         }
                         else {
+                            console.log(stderr);
                             console.log("Failed on creating wav file on storage...");
+                            res.status(500).send("Internal server error. Please try later.");
                         }
                         process.chdir("../server");
                     }
@@ -272,7 +275,7 @@ app.get('/api/audio/:id', (req, res) => {
     }
     else {
         res.header({
-            "Content-Type": "audio/wav"
+            "Content-Type": "application/octet-stream"
         }).sendFile(path.join(__dirname, `../audio/wavs/${filename}`), (error) => {
             if (error) {
                 console.log(`Sending file ${filename} failed.`);
