@@ -1,5 +1,5 @@
 import  axios  from 'axios';
-import React, {useState, useEffect, StrictMode} from 'react'
+import React, {useState, useEffect, useRef, StrictMode} from 'react'
 import '../SongMakerSelf/AppSongMaker.css'
 // import SongMakerSelf from './SongMakerSelf';
 import musicImg from '../SongMakerSelf/img/music.png'
@@ -32,6 +32,9 @@ const SongMakerGroup=()=>{
     const [notes, setNotes] = useState([]);
 
     const [showPopup, setShowPopup]=useState(false);
+
+    const playtestButton = useRef();
+    const uploadButton = useRef();
     
     const togglePopup=(event)=>{
       setShowPopup(event.target.value);
@@ -117,7 +120,8 @@ const SongMakerGroup=()=>{
 
     const audioPlayTest = (event) => {
       event.preventDefault();
-      console.log(notes);
+      playtestButton.current.disabled = true;
+      playtestButton.current.value = "Loading...";
       const playtestJson = {
         tempo: inputTempo,
         total_length: total_length,
@@ -148,12 +152,20 @@ const SongMakerGroup=()=>{
         a.click()
         a.remove()
         // window.URL.revokeObjectURL(url);
+        playtestButton.current.value = "PlayTest";
+        playtestButton.current.disabled = false;
       }
-      )
+      ).catch((res) => {
+        alert("Playtest failed..");
+        playtestButton.current.value = "PlayTest";
+        playtestButton.current.disabled = false;
+      })
     };
 
     const audioUpload = (event) => {
       event.preventDefault();
+      uploadButton.current.disabled = true;
+      uploadButton.current.value = "Uploading...";
 
       console.log(notes);
 
@@ -171,10 +183,17 @@ const SongMakerGroup=()=>{
           "Content-Type": "application/json"
         }
       }).then((res) => {
-        console.log("OK!!");
-        console.log(res.data)
+        // console.log("OK!!");
+        // console.log(res.data);
+        alert("Upload success!!");
+        uploadButton.current.value = "Upload";
+        uploadButton.current.disabled = false;
       }
-      )
+      ).catch((p) => {
+        alert("Upload failed..");
+        uploadButton.current.value = "Upload";
+        uploadButton.current.disabled = false;
+      })
 
       //제목 설정 팝업창 띄우기
       // return(
@@ -234,9 +253,9 @@ const SongMakerGroup=()=>{
           {/* <input type="submit" value="Submit" onClick={handleClick}></input> */}
           {/* <button onClick={audioPlayTest}>Playtest</button>
           <button onClick={audioUpload}>Upload</button> */}
-          <input type="submit" value="PlayTest" onClick={audioPlayTest}></input>
-          <input type="submit" value="Upload" onClick={audioUpload}></input>
-          <input type="submit" value="my page" onClick={myPage}></input>
+          <input type="submit" value="PlayTest" onClick={audioPlayTest} ref={playtestButton}></input>
+          <input type="submit" value="Upload" onClick={audioUpload} ref={uploadButton}></input>
+          <input type="submit" value="My Page" onClick={myPage}></input>
           </div>
           </div>
           
