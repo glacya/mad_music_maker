@@ -54,7 +54,6 @@ SongMaker에서는 Name(곡명), Tempo, Rhythm 설정이 가능합니다.
 - Upload : Upload 버튼을 클릭하면 My Page로 해당 wave 파일이 업로드 됩니다.
 - My Page : My Page 버튼을 클릭하여 그동안 생성한 음악 리스트를 확인할 수 있습니다.
 #### 2]
-    
     +버튼을 눌렀을 때 이동하는 창입니다. Note Length, Note type를 지정할 수 있습니다.
     
     ![4](https://user-images.githubusercontent.com/80519883/185917201-19a18d9a-489e-4f58-93d4-e90a080e645d.png)
