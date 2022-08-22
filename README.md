@@ -54,29 +54,30 @@ SongMaker에서는 Name(곡명), Tempo, Rhythm 설정이 가능합니다.
 - Upload : Upload 버튼을 클릭하면 My Page로 해당 wave 파일이 업로드 됩니다.
 - My Page : My Page 버튼을 클릭하여 그동안 생성한 음악 리스트를 확인할 수 있습니다.
 #### 2]
-    +버튼을 눌렀을 때 이동하는 창입니다. Note Length, Note type를 지정할 수 있습니다.
-    
-    ![4](https://user-images.githubusercontent.com/80519883/185917201-19a18d9a-489e-4f58-93d4-e90a080e645d.png)
-    
-    1) 기본 설정
-    
-    - Note Length는 음의 길이에 해당하며, 표시된 각 세로 칸 수를 의미합니다. Note Length의 default 값은 1로 설정되어 있습니다.
-    - Note type는 악기 종류를 의미하며, sine, square, triangle, saw, synth1, synth2, kick, snare 총 8 종류의 악기가 있습니다. 이 중 하나를 선택하여 음표를 배치할 수 있습니다.
-    
-    2) piano roll
-    
-    - piano roll의 가로는 시간, 세로는 음을 의미합니다. piano roll은 가로 32칸(2마디)가 기본이며, 음은 C4(낮은 도)부터 C6(높은 도)까지로 구성되어 있습니다.
-    - piano roll의 각 칸을 클릭하면 해당 음계와 색상이 표시됩니다. 설정한 Note Length만큼 칸이 채워지며, 클릭한 칸을 다시 클릭하면 삭제가 가능합니다.
-    
-    3) 악보
-    
-    - A-G의 문자를 사용해 음을 표현하는 ABC notation을 통해 악보를 그립니다.
-    
-    4) 버튼
-    
-    - ← 버튼을 누르면 이전 창으로 이동하며, 작업 공간에 악보가 추가됩니다.
-    - 우측 상단의 + 버튼을 클릭하면 piano roll의 길이를 16칸 더 추가할 수 있습니다. 이를 통해 원하는 만큼 곡의 길이를 늘릴 수 있습니다.
-    
+
++버튼을 눌렀을 때 이동하는 창입니다. Note Length, Note type를 지정할 수 있습니다.
+
+![4](https://user-images.githubusercontent.com/80519883/185917201-19a18d9a-489e-4f58-93d4-e90a080e645d.png)
+
+1) 기본 설정
+
+- Note Length는 음의 길이에 해당하며, 표시된 각 세로 칸 수를 의미합니다. Note Length의 default 값은 1로 설정되어 있습니다.
+- Note type는 악기 종류를 의미하며, sine, square, triangle, saw, synth1, synth2, kick, snare 총 8 종류의 악기가 있습니다. 이 중 하나를 선택하여 음표를 배치할 수 있습니다.
+
+2) piano roll
+
+- piano roll의 가로는 시간, 세로는 음을 의미합니다. piano roll은 가로 32칸(2마디)가 기본이며, 음은 C4(낮은 도)부터 C6(높은 도)까지로 구성되어 있습니다.
+- piano roll의 각 칸을 클릭하면 해당 음계와 색상이 표시됩니다. 설정한 Note Length만큼 칸이 채워지며, 클릭한 칸을 다시 클릭하면 삭제가 가능합니다.
+
+3) 악보
+
+- A-G의 문자를 사용해 음을 표현하는 ABC notation을 통해 악보를 그립니다.
+
+4) 버튼
+
+- ← 버튼을 누르면 이전 창으로 이동하며, 작업 공간에 악보가 추가됩니다.
+- 우측 상단의 + 버튼을 클릭하면 piano roll의 길이를 16칸 더 추가할 수 있습니다. 이를 통해 원하는 만큼 곡의 길이를 늘릴 수 있습니다.
+
 
 해당 작업을 반복하면, 다음과 같이 작곡이 완성되며, 악기에 따른 악보를 함께 확인할 수 있습니다.
 
