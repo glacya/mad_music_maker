@@ -41,6 +41,7 @@ Server)
         
 
 ### 2) SongMaker
+#### 1]
 
 ![6](https://user-images.githubusercontent.com/80519883/185917271-83b3af5e-9104-498c-8853-4a42335ce33a.png)
 
@@ -52,7 +53,7 @@ SongMaker에서는 Name(곡명), Tempo, Rhythm 설정이 가능합니다.
 - Play Test : Play Test 버튼을 클릭하면 wave 파일이 생성되면서 다운로드가 됩니다. 파일을 실행시키면 작곡한 음악을 재생할 수 있습니다.
 - Upload : Upload 버튼을 클릭하면 My Page로 해당 wave 파일이 업로드 됩니다.
 - My Page : My Page 버튼을 클릭하여 그동안 생성한 음악 리스트를 확인할 수 있습니다.
-- SongMaker_+ 버튼 누를 시
+#### 2]
     
     +버튼을 눌렀을 때 이동하는 창입니다. Note Length, Note type를 지정할 수 있습니다.
     
