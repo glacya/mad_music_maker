@@ -50,8 +50,8 @@ SongMaker에서는 Name(곡명), Tempo, Rhythm 설정이 가능합니다.
 +버튼과 Play Test 버튼, Upload 버튼, My Page 버튼이 있습니다.
 
 - +버튼 : + 버튼을 클릭하면 작곡을 하는 창으로 넘어갑니다. + 버튼은 각각 한 종류의 악기에 대응하며, + 버튼을 통해 악기를 추가할 수 있습니다.
-- Play Test : Play Test 버튼을 클릭하면 wave 파일이 생성되면서 다운로드가 됩니다. 파일을 실행시키면 작곡한 음악을 재생할 수 있습니다.
-- Upload : Upload 버튼을 클릭하면 My Page로 해당 wave 파일이 업로드 됩니다.
+- Play Test : Play Test 버튼을 클릭하면 WAV 파일이 생성되면서 다운로드가 됩니다. 파일을 실행시키면 작곡한 음악을 재생할 수 있습니다.
+- Upload : Upload 버튼을 클릭하면 My Page로 해당 WAV 파일이 업로드 됩니다.
 - My Page : My Page 버튼을 클릭하여 그동안 생성한 음악 리스트를 확인할 수 있습니다.
 #### 2]
 
